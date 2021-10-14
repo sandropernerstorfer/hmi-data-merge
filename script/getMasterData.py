@@ -1,9 +1,12 @@
-import os
-import tkinter
+import os, tkinter, time
 from tkinter.filedialog import askopenfilename
 from openpyxl import Workbook, load_workbook
-from database import safetyAreas
-from utils import printInfoBlock
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------TODO
+import sys
+sys.path.insert(0, './assets')
+from script.assets.utils import printInfoBlock
+from script.assets.database import safetyAreas
 
 
 # Clear Console Window
@@ -14,8 +17,13 @@ root.withdraw()
 
 
 # Ask for Master File-Path
+print('Select Master Excel-File ...')
+time.sleep(1)
 filePath = askopenfilename(filetypes=[( 'Excel File', '.xlsx .xls')])
 if(filePath == ''): exit()
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------TODO
+#print(filePath)    No permission
 
 # Hardcoded Variables for Master File - can be dynamic later
 firstRow = 8

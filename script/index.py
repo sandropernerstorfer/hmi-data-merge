@@ -33,10 +33,10 @@ master_ws = master_wb.active
 
 # User Input: Filtering and Row Parameters
 clearConsole()
-firstRow = 8    # hardcoded
-pidRow = 3      # hardcoded
 printInfoBlock('Set filter conditions:', 'green')
 pid = input("\nP&ID: ")
+firstRow = 8    # hardcoded
+pidRow = 3      # hardcoded
 print('')
 pid = int(pid)
 

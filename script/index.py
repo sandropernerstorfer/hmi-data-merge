@@ -1,4 +1,4 @@
-import tkinter, time, re
+import tkinter, time, re, sys
 from tkinter.filedialog import askopenfilename
 from openpyxl import Workbook, load_workbook
 # Modules
@@ -12,7 +12,7 @@ root.withdraw()
 clearConsole()
 
 # Ask user for Master File-Path
-print('[ ] Select Master-File in dialog')
+print('[ ] Select master file in dialog')
 time.sleep(.8)
 filePath = askopenfilename(
     filetypes = [( 'Excel File', '.xlsx .xls')]
@@ -21,23 +21,27 @@ root.destroy()
 clearConsole()
 if(filePath == ''):
   exit()
-print('[\033[92mx\033[0m] Select Master-File in dialog')
+print('[\033[92mx\033[0m] Select master file in dialog')
 time.sleep(2)
 
 # Load Master-Workbook & Target-Sheet
 try:
-  print(' | ')
-  print(" *  Loading Excel Data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
+  print(' |')
+  print("[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
   master_wb = load_workbook(filePath)
+  CURSOR_UP_ONE = '\x1b[1A' 
+  ERASE_LINE = '\x1b[2K' 
+  sys.stdout.write(CURSOR_UP_ONE) 
+  sys.stdout.write(ERASE_LINE) 
+  print("[\033[92mx\033[0m] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m\n")
 except:
   clearConsole()
-  print('Something went wrong while loading the Master-File. Make sure you \033[93mclose the file\033[0m before running the script.\n')
+  print('Something went wrong while loading the master file. Make sure you \033[93mclose the file\033[0m before running the script.\n')
   exit()
 master_ws = master_wb.active
 
 # User Input: Filtering and Row Parameters
-clearConsole()
-printInfoBlock('Set filter conditions:', 'green')
+printInfoBlock('Set filter conditions:', 'yellow')
 pid = input("\nP&ID: ")
 
 firstRow  = 8
@@ -69,8 +73,10 @@ for key, *values in master_ws.iter_rows(min_row = firstRow):
     row.insert(0, None)   # None, None, is just for easier indexing
     row.insert(0, None)
     
-    desc  = row[descCol]
-    unit  = row[unitCol]
+    desc = row[descCol]
+    
+    unit = row[unitCol]
+    if row[unitCol] == 'NA': unit = None
     
     if(len(row[typeCol]) == 2 and row[typeCol][-1] == 'C'):
       t = list(row[typeCol])
@@ -131,7 +137,13 @@ for row in entries:
   ws.append(row)
 
 # Save new file in 'output' folder
-wb.save('./script/output/'+str(pid)+'-Processed.xlsx')
-clearConsole()
-printInfoBlock('File saved in "output" folder.', 'green')
-print('')
+
+try:
+  wb.save('./script/output/'+str(pid)+'-processed.xlsx')
+  clearConsole()
+  printInfoBlock('File saved in "output" folder.', 'green')
+  print('')
+except:
+  clearConsole()
+  print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
+  exit()

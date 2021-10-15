@@ -1,5 +1,4 @@
-from typing import Match
-
+import os
 
 def printInfoBlock(text, color = '0'):
   
@@ -13,3 +12,6 @@ def printInfoBlock(text, color = '0'):
   print('-'+l*'-'+'-')
   print(' \033['+color+'m'+text+'\033[0m ')
   print('-'+l*'-'+'-')
+  
+def clearConsole():
+  os.system('cls||clear')

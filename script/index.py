@@ -14,9 +14,12 @@ clearConsole()
 # Ask user for Master File-Path
 print('[ ] Select Master-File in dialog')
 time.sleep(.8)
-filePath = askopenfilename(filetypes=[( 'Excel File', '.xlsx .xls')])
+filePath = askopenfilename(
+    filetypes = [( 'Excel File', '.xlsx .xls')]
+  )
 root.destroy()
-if(filePath == ''): exit()
+if(filePath == ''):
+  exit()
 clearConsole()
 print('[\033[92mx\033[0m] Select Master-File in dialog')
 time.sleep(2)
@@ -40,7 +43,7 @@ pidRow = 3      # hardcoded
 print('')
 pid = int(pid)
 
-# Loop through Sheet-Rows and save in list
+# Loop through Sheet-Rows and save elements with PID in list
 entries = []
 for key, *values in master_ws.iter_rows(min_row = firstRow):
   if(key.value == None):

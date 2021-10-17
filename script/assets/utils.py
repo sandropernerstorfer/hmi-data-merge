@@ -52,18 +52,40 @@ def getMasterSheet(filePath):
     exit()
     
 def askForPid():
-  pid = input('P&ID: ')
+  while True:
+    pid = input('P&ID: ')
+    pid = pid.strip()
+    if(pid != None and pid != ''): break
+    else: eraseLastLine()
   return pid
 
-def askForTypical():
-  typical = input('Typical: ')
-  return typical
+def askAndGetTypicalFunction(pid):
+  while True:
+    typical = input('Typical: ')
+    typical = typical.strip()
+    if(typical == None or typical == ''):
+      eraseLastLine()
+      continue
+    
+    filterFunction = getFilterFunction(typical)
+    if(filterFunction != None):
+      break
+    else:
+      clearConsole()
+      print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
+      print('P&ID: '+pid)
+  return [filterFunction, typical]
 
 def getFilterFunction(typical):
   typicalFilterFunction = None
   if typical in typicals:
     typicalFilterFunction = typicals[typical]
   return typicalFilterFunction
+
+def getFilteredData(filterFunction, pid, master_sheet):
+  try: convertedPid = int(pid)
+  except: convertedPid = pid
+  return filterFunction(convertedPid, master_sheet)
 
 def printFilterResults(entries):
   print('')

@@ -6,13 +6,11 @@ from assets.utils import *
 # Initial Console Clearing
 #
 clearConsole()
-
 #
 # Get Master File Path and load Worksheet
 #
 filePath = getMasterPath()
 master_ws = getMasterSheet(filePath)
-
 #
 # Logic Circle Start  |  Take Input-Values, Filter Data, Save Sheet
 #
@@ -26,39 +24,21 @@ while True:
     #
     # PID-Input Circle Start
     #
-    while True:
-      pid = askForPid().strip()
-      if(pid != None and pid != ''): break
-      else:
-        eraseLastLine()
+    pid = askForPid()
     #
-    # Typical-Input Circle Start
+    # Typical-Input Circle Start | Search and get filter function
     #
-    while True:
-      typical = askForTypical().strip()
-      if(typical == None or typical == ''):
-        eraseLastLine()
-        continue
-      
-      typicalFilterFunction = getFilterFunction(typical)
-      if(typicalFilterFunction != None):
-        break
-      else:
-        clearConsole()
-        print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
-        print('P&ID: '+pid)
+    typicalFilterFunction, typical = askAndGetTypicalFunction(pid)
     #
     # Get filtered list with Typical-Function
     #
-    try: convertedPid = int(pid)
-    except: convertedPid = pid
-    entries = typicalFilterFunction(convertedPid, master_ws)
+    entries = getFilteredData(typicalFilterFunction, pid, master_ws)
     if(entries == None):
       clearConsole()
       printInfoBlock('Found 0 entries.', 'red')
       print('\nOne of following could be the reason:')
       print('\033[93m*\033[0m No entries found with given PID: '+pid)
-      print('\033[93m*\033[0m No entries found falling into the given typical: '+typical)
+      print('\033[93m*\033[0m None of the entries fall into the given typical category: '+typical)
       print('\nYou can try again using different parameters.')
     else: break
   #

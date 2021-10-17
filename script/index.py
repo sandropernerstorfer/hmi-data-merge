@@ -1,65 +1,70 @@
 from openpyxl import Workbook
-# Modules
-from assets.utils import printInfoBlock, clearConsole, getMasterPath, getMasterSheet
-from assets.database import typicals
+from assets.utils import *
+
+# --------------------------------- #
 
 clearConsole()
-
 filePath = getMasterPath()
-
 master_ws = getMasterSheet(filePath)
 
-# User Input: Filter parameters
-processingUserInput = True
-printInfoBlock('Set filter conditions:', 'yellow')
-while processingUserInput:
-  print('')
-  # PID
-  pid = input('P&ID: ')
-  pid = int(pid)
-  # TYPICAL
-  typicalNotFound = True
-  while typicalNotFound:
-    typical = input('Typical: ')
-    # Find the right Filtering Function
-    if typical in typicals:
-      typicalFilterFunction = typicals[typical]
-      break
-    else:
+while True:       # Creating Output Dataset
+  while True:     # Processing User Input
+    printInfoBlock('Set filter conditions:', 'yellow')
+    print('')
+    
+    while True:   # Processing PID
+      pid = askForPid().strip()
+      if(pid != None and pid != ''): break
+      else:
+        eraseLastLine()
+      
+    while True:   # Processing Typical
+      typical = askForTypical().strip()
+      if(typical == None or typical == ''):
+        eraseLastLine()
+        continue
+      
+      typicalFilterFunction = getFilterFunction(typical)
+      if(typicalFilterFunction != None):
+        break
+      else:
+        clearConsole()
+        print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
+        print('P&ID: '+pid)
+
+    try:
+      convertedPid = int(pid)
+    except:
+      convertedPid = pid
+      
+    entries = typicalFilterFunction(convertedPid, master_ws)
+    if(entries == None):
       clearConsole()
-      print('\033[93m*\033[0m Couldn\'t find this typical in the typicals list. Try searching again:\n')
-      print('P&ID: '+str(pid))
-  print('')
-
-  # Call filtering function and get processed list
-  entries = typicalFilterFunction(pid, master_ws)
-
-  # Info and restart user input if no entries returned
-  if(entries == None):
-    clearConsole()
-    printInfoBlock('Found 0 entries.', 'red')
-    print('\nOne of following could be the reason:')
-    print('\033[93m*\033[0m No entries found with given PID: '+str(pid))
-    print('\033[93m*\033[0m No entries found falling into the given typical: '+typical)
-    printInfoBlock('You can try again:', 'yellow')
-  else:
-    break
+      printInfoBlock('Found 0 entries.', 'red')
+      print('\nOne of following could be the reason:')
+      print('\033[93m*\033[0m No entries found with given PID: '+pid)
+      print('\033[93m*\033[0m No entries found falling into the given typical: '+typical)
+      print('\nYou can try again using different parameters.')
+    else: break
   
-# Print Result Infos
-printInfoBlock('Found '+str(len(entries) - 1)+' entries.', 'cyan')
-printInfoBlock('First: '+entries[1][0]+' ... Last: '+entries[-1][0], 'cyan')
+  printFilterResults(entries)
 
-# User Confirmation
-confirmation = input('\n\nProcess and populate new Excel-File? [\033[92m y\033[0m | \033[91mn\033[0m ]: ')
-if(confirmation != 'y' and confirmation != 'yes' and confirmation != ''):
+  confirmation = getUserConfirmation('Process and populate new Excel-File?')
   clearConsole()
-  exit()
+  if(confirmation == True): break
+  else:
+    confirmation = getUserConfirmation('Start again?')
+    clearConsole()
+    if(confirmation == True):
+      continue
+    else:
+      exit()
 
 # Instanciate destination workbook & sheet
 print('Creating new Excel-Workbook and importing Data ...')
 wb = Workbook()
 ws = wb.active
-ws.title = str(pid)+'-Data'
+ws.title = pid+'-Data'
 
 # Populate new workbook/sheet
 for row in entries:
@@ -67,7 +72,7 @@ for row in entries:
 
 # Save new file in 'output' folder
 try:
-  wb.save('./script/output/'+str(pid)+'-processed.xlsx')
+  wb.save('./script/output/'+pid+'-processed.xlsx')
   clearConsole()
   printInfoBlock('File saved in "output" folder.', 'green')
   print('')

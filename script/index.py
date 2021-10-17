@@ -32,11 +32,8 @@ while True:       # Creating Output Dataset
         print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
         print('P&ID: '+pid)
 
-    try:
-      convertedPid = int(pid)
-    except:
-      convertedPid = pid
-      
+    try: convertedPid = int(pid)
+    except: convertedPid = pid
     entries = typicalFilterFunction(convertedPid, master_ws)
     if(entries == None):
       clearConsole()
@@ -59,6 +56,8 @@ while True:       # Creating Output Dataset
       continue
     else:
       exit()
+
+
 
 # Instanciate destination workbook & sheet
 print('Creating new Excel-Workbook and importing Data ...')

@@ -2,23 +2,39 @@ from openpyxl import Workbook
 from assets.utils import *
 
 # --------------------------------- #
-
+#
+# Initial Console Clearing
+#
 clearConsole()
+
+#
+# Get Master File Path and load Worksheet
+#
 filePath = getMasterPath()
 master_ws = getMasterSheet(filePath)
 
-while True:       # Creating Output Dataset
-  while True:     # Processing User Input
+#
+# Logic Circle Start  |  Take Input-Values, Filter Data, Save Sheet
+#
+while True:
+  #
+  # Input Circle Start
+  #
+  while True:
     printInfoBlock('Set filter conditions:', 'yellow')
     print('')
-    
-    while True:   # Processing PID
+    #
+    # PID-Input Circle Start
+    #
+    while True:
       pid = askForPid().strip()
       if(pid != None and pid != ''): break
       else:
         eraseLastLine()
-      
-    while True:   # Processing Typical
+    #
+    # Typical-Input Circle Start
+    #
+    while True:
       typical = askForTypical().strip()
       if(typical == None or typical == ''):
         eraseLastLine()
@@ -31,7 +47,9 @@ while True:       # Creating Output Dataset
         clearConsole()
         print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
         print('P&ID: '+pid)
-
+    #
+    # Get filtered list with Typical-Function
+    #
     try: convertedPid = int(pid)
     except: convertedPid = pid
     entries = typicalFilterFunction(convertedPid, master_ws)
@@ -43,9 +61,13 @@ while True:       # Creating Output Dataset
       print('\033[93m*\033[0m No entries found falling into the given typical: '+typical)
       print('\nYou can try again using different parameters.')
     else: break
-  
+  #
+  # Print filtered list result-infos
+  #
   printFilterResults(entries)
-
+  #
+  # Get user confirmation for continuing with populating new sheet
+  #
   confirmation = getUserConfirmation('Process and populate new Excel-File?')
   clearConsole()
   if(confirmation == True): break
@@ -58,6 +80,7 @@ while True:       # Creating Output Dataset
       exit()
 
 
+# ------------------------------------------------------------------------------------------- TODO Saving Logic #
 
 # Instanciate destination workbook & sheet
 print('Creating new Excel-Workbook and importing Data ...')

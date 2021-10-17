@@ -1,38 +1,13 @@
-import tkinter, time, sys
-from tkinter.filedialog import askopenfilename
-from openpyxl import Workbook, load_workbook
+from openpyxl import Workbook
 # Modules
-from assets.utils import printInfoBlock, clearConsole, CURSOR_UP_ONE, ERASE_LINE
+from assets.utils import printInfoBlock, clearConsole, getMasterPath, getMasterSheet
 from assets.database import typicals
 
-# Clear tkinter frame & clear Console
-root = tkinter.Tk()
-root.withdraw()
 clearConsole()
 
-# Ask user for Master File-Path
-print('[ ] Select master file in dialog')
-time.sleep(.8)
-filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
-root.destroy()
-clearConsole()
-if(filePath == ''):
-  exit()
-print('[\033[92mx\033[0m] Select master file in dialog')
-time.sleep(2)
+filePath = getMasterPath()
 
-# Load Master-Workbook & Target-Sheet
-try:
-  print(" |\n[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
-  master_wb = load_workbook(filePath)
-  sys.stdout.write(CURSOR_UP_ONE) 
-  sys.stdout.write(ERASE_LINE) 
-  print("[\033[92mx\033[0m] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m\n")
-except:
-  clearConsole()
-  print('Something went wrong while loading the master file. Make sure you \033[93mclose the file\033[0m before running the script.\n')
-  exit()
-master_ws = master_wb.active
+master_ws = getMasterSheet(filePath)
 
 # User Input: Filter parameters
 processingUserInput = True

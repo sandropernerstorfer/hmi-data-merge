@@ -2,12 +2,20 @@ import time, tkinter, sys
 from os import system
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
-from assets.database import typicals, consoleColorCodes
+from assets.database import typicals
 
 # --------------------------------- #
 #
 # Console Functions
 #
+consoleColorCodes = {
+  '0':      '0',
+  'blue':   '94',
+  'red':    '91',
+  'yellow': '93',
+  'green':  '92',
+  'cyan':   '96'
+}
 def eraseLastLine():
   sys.stdout.write('\x1b[1A') 
   sys.stdout.write('\x1b[2K')

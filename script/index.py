@@ -1,4 +1,5 @@
 from openpyxl import Workbook
+from assets.typicals.__filterUtils import getAllWithPid
 from assets.utils import *
 
 # --------------------------------- #
@@ -19,20 +20,29 @@ while True:
   # Input Circle Start
   #
   while True:
-    printInfoBlock('Set filter conditions:', 'yellow')
-    print('')
     #
     # PID-Input Circle Start
     #
     pid = askForPid()
     #
-    # Typical-Input Circle Start | Search and get filter function
+    # Get elements with given PID
+    #
+    allElements = getAllWithPid(pid, master_ws)
+    clearConsole()
+    if(len(allElements) == 0):
+      printPidFilterResult(allElements, pid, 'red')
+      print('\033[91m*\033[0m No Elements with given PID found. Try searching again.\n')
+      continue
+    else:
+      printPidFilterResult(allElements, pid, 'green')
+    #
+    # Typical-Input Circle Start | Ask for typicals, search and get filter function
     #
     typicalFilterFunction, typical = askAndGetTypicalFunction(pid)
     #
     # Get filtered list with Typical-Function
     #
-    entries = getFilteredData(typicalFilterFunction, pid, master_ws)
+    entries, typical = typicalFilterFunction(allElements)
     if(entries == None):
       clearConsole()
       printInfoBlock('Found 0 entries.', 'red')
@@ -42,9 +52,9 @@ while True:
       print('\nYou can try again using different parameters.')
     else: break
   #
-  # Print filtered list result-infos
+  # Print filtered list result infos
   #
-  printFilterResults(entries, pid)
+  printTypicalFilterResults(entries, typical)
   #
   # Get user confirmation for continuing with populating new sheet
   #

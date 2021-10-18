@@ -52,6 +52,8 @@ def getExcelSheet(filePath, fileName, sheetName):
     exit()
     
 def askForPid():
+  printInfoBlock('Set P&ID you want to filter:', 'cyan')
+  print('')
   while True:
     pid = input('P&ID: ')
     pid = pid.strip()
@@ -59,7 +61,15 @@ def askForPid():
     else: eraseLastLine()
   return pid
 
+def printPidFilterResult(entries, pid, color):
+  printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
+  if(len(entries) > 0):
+    printInfoBlock('First: ... Last:', color)
+  print('')
+
 def askAndGetTypicalFunction(pid):
+  printInfoBlock('Set Typicals you want to filter (seperate with ; (semicolon) ---- WIP):', 'cyan')
+  print('')
   while True:
     typical = input('Typical: ')
     typical = typical.strip()
@@ -82,15 +92,9 @@ def getFilterFunction(typical):
     typicalFilterFunction = typicals[typical][0]
   return typicalFilterFunction
 
-def getFilteredData(filterFunction, pid, master_sheet):
-  try: convertedPid = int(pid)
-  except: convertedPid = pid
-  return filterFunction(convertedPid, master_sheet)
-
-def printFilterResults(entries, pid):
+def printTypicalFilterResults(entries, typical):
   print('')
-  printInfoBlock('Found '+str(len(entries) - 1)+' entries with PID: '+pid, 'cyan')
-  printInfoBlock('First: '+entries[1][0]+' ... Last: '+entries[-1][0], 'cyan')
+  printInfoBlock('Found '+str(len(entries) - 1)+' entries with Typical: '+typical, 'cyan')
   print('')
 
 def getUserConfirmation(text):

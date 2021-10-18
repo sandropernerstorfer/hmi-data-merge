@@ -13,7 +13,7 @@ def eraseLastLine():
   sys.stdout.write('\x1b[2K')
 def clearConsole():
   system('cls||clear')
-def printListItem(text,color):
+def printListItem(text,color = '0'):
   color = consoleColorCodes[color]
   print('\033['+color+'m*\033[0m '+text)
 def printInfoBlock(text, color = '0'):
@@ -30,7 +30,7 @@ def printPidFilterResult(entries, pid, color):
   print('')
 def printTypicalFilterResults(entries, typical):
   print('')
-  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'cyan')
+  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'green')
   print('')
 def getUserConfirmation(text):
   confirmation = input(text+' [\033[92m y\033[0m | \033[91mn\033[0m ]: ')

@@ -2,7 +2,7 @@ import time, tkinter, sys
 from os import system
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
-from assets.database import typicals
+from assets.database import typicals, consoleColorCodes
 
 # --------------------------------- #
 #
@@ -13,20 +13,20 @@ def eraseLastLine():
   sys.stdout.write('\x1b[2K')
 def clearConsole():
   system('cls||clear')
+def printListItem(text,color):
+  color = consoleColorCodes[color]
+  print('\033['+color+'m*\033[0m '+text)
 def printInfoBlock(text, color = '0'):
   l = len(text)
-  if color   == 'blue':     color = '94'
-  elif color == 'red':      color = '91'
-  elif color == 'yellow':   color = '93'
-  elif color == 'green':    color = '92'
-  elif color == 'cyan':     color = '96'
+  color = consoleColorCodes[color]
   print('-'+l*'-'+'-')
   print(' \033['+color+'m'+text+'\033[0m ')
   print('-'+l*'-'+'-')
 def printPidFilterResult(entries, pid, color):
   printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
   if(len(entries) > 0):
-    printInfoBlock('First: '+entries[0][4]+str(entries[0][5])+' ... Last: '+entries[-1][4]+str(entries[-1][5]), color)
+    printListItem('First: '+entries[0][4]+str(entries[0][5]), 'green')
+    printListItem('Last : '+entries[-1][4]+str(entries[-1][5]), 'green')
   print('')
 def printTypicalFilterResults(entries, typical):
   print('')
@@ -80,9 +80,10 @@ def askForPid():
 
 def askAndReturnFilterFunction(pid):
   printInfoBlock('Set Typicals you want to filter', 'cyan')
+  printListItem('Seperate multiple typicals with semicolons: ;', 'yellow')
   print('')
   while True:
-    typical = input('Typicals: [seperate with ;] ')
+    typical = input('Typicals: ')
     typical = typical.strip()
     if(typical == None or typical == ''):
       eraseLastLine()

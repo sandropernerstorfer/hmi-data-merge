@@ -15,7 +15,7 @@ def clearConsole():
 
 def printInfoBlock(text, color = '0'):
   l = len(text)
-  if color   == 'blue':       color = '94'
+  if color   == 'blue':     color = '94'
   elif color == 'red':      color = '91'
   elif color == 'yellow':   color = '93'
   elif color == 'green':    color = '92'

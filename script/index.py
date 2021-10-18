@@ -31,7 +31,7 @@ while True:
     clearConsole()
     if(len(allElements) == 0):
       printPidFilterResult(allElements, pid, 'red')
-      print('\033[91m*\033[0m No Elements with given PID found. Try searching again.\n')
+      printListItem('No Elements with given PID found. Try searching again.', 'red')
       continue
     else: printPidFilterResult(allElements, pid, 'green')
     #
@@ -46,8 +46,8 @@ while True:
       clearConsole()
       printInfoBlock('Found 0 entries.', 'red')
       print('\nOne of following could be the reason:')
-      print('\033[93m*\033[0m No entries found with given PID: '+pid)
-      print('\033[93m*\033[0m None of the entries fall into the given typical category: '+typical)
+      printListItem('No entries found with given PID: '+pid, 'yellow')
+      printListItem('None of the entries fall into the given typical category: '+typical, 'yellow')
       print('\nYou can try again using different parameters.')
     else: break
   #

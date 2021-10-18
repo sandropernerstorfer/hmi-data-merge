@@ -1,19 +1,14 @@
-# Import Typical Functions
 from assets.filtering.P_AinHART import *
 
-consoleColorCodes = {
-  '0':      '0',
-  'blue':   '94',
-  'red':    '91',
-  'yellow': '93',
-  'green':  '92',
-  'cyan':   '96'
-}
-
+#
+# Available Safety Areas
+#
 safetyAreas = {
   '+H06': 'Distn'
 }
-
+#
+# Available Typicals
+#
 typicals = {
-  'P_AinHART': [P_AinHART_Filter, P_AinHART_Merge]
+  'P_AinHART': [P_AinHART_Filter, ['AI', 'DI', 'FI', 'LI', 'PDI', 'PI', 'SI', 'TI', 'XI']]
 }

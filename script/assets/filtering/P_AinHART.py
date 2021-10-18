@@ -1,7 +1,6 @@
-def P_AinHART_Filter(instrumentRows):
-  
+def P_AinHART_Filter(instrumentRows, filterTypes):
   import re
-  from assets.database import safetyAreas  
+  from assets.database import safetyAreas
 
   typeCol   = 6
   tagCol    = 7

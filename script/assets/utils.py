@@ -86,7 +86,7 @@ def askForPid():
     else: eraseLastLine()
   return pid
 
-def askAndReturnFilterFunction(pid):
+def askAndReturnFilterTools(pid):
   printInfoBlock('Set Typicals you want to filter', 'cyan')
   printListItem('Seperate multiple typicals with semicolons: ;', 'yellow')
   print('')
@@ -97,17 +97,17 @@ def askAndReturnFilterFunction(pid):
       eraseLastLine()
       continue
     
-    filterFunction = getFilterFunction(typical)
-    if(filterFunction != None):
+    filterTools = getFilterTools(typical)
+    if(filterTools != None):
       break
     else:
       clearConsole()
       print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
       print('P&ID: '+pid)
-  return filterFunction
+  return filterTools
 
-def getFilterFunction(typical):
-  filterFunction = None
+def getFilterTools(typical):
+  filterTools = None
   if typical in typicals:
-    filterFunction = typicals[typical][0]
-  return filterFunction
+    filterTools = typicals[typical]
+  return filterTools

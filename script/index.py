@@ -1,5 +1,5 @@
 from openpyxl import Workbook
-from assets.typicals.__filterUtils import getAllWithPid
+from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *
 
 # --------------------------------- #

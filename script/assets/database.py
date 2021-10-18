@@ -1,5 +1,5 @@
 # Import Typical Functions
-from assets.typicals.P_AinHART import *
+from assets.filtering.P_AinHART import *
 
 consoleColorCodes = {
   '0':      '0',

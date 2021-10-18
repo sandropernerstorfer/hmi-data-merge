@@ -52,7 +52,7 @@ def getExcelSheet(filePath, fileName, sheetName):
     exit()
     
 def askForPid():
-  printInfoBlock('Set P&ID you want to filter:', 'cyan')
+  printInfoBlock('Set P&ID you want to filter', 'cyan')
   print('')
   while True:
     pid = input('P&ID: ')
@@ -68,10 +68,10 @@ def printPidFilterResult(entries, pid, color):
   print('')
 
 def askAndGetTypicalFunction(pid):
-  printInfoBlock('Set Typicals you want to filter (seperate with ; (semicolon) ---- WIP):', 'cyan')
+  printInfoBlock('Set Typicals you want to filter', 'cyan')
   print('')
   while True:
-    typical = input('Typical: ')
+    typical = input('Typicals (seperate with ; --  WIP): ')
     typical = typical.strip()
     if(typical == None or typical == ''):
       eraseLastLine()
@@ -94,7 +94,7 @@ def getFilterFunction(typical):
 
 def printTypicalFilterResults(entries, typical):
   print('')
-  printInfoBlock('Found '+str(len(entries) - 1)+' entries with Typical: '+typical, 'cyan')
+  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'cyan')
   print('')
 
 def getUserConfirmation(text):

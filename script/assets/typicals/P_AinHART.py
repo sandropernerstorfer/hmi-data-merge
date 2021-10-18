@@ -1,4 +1,4 @@
-def P_AinHART_Filter(instrumentList):
+def P_AinHART_Filter(list):
   
   import re
   from assets.database import safetyAreas  
@@ -18,7 +18,7 @@ def P_AinHART_Filter(instrumentList):
   
   # Loop through Sheet-Rows and save elements with PID in list
   entries = []
-  for key, *values in instrumentList:
+  for key, *values in list:
     
     row = [v for v in values]
     row.insert(0, None)   # None, None, is just for easier indexing

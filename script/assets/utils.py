@@ -47,8 +47,9 @@ def getUserConfirmation(text):
   else:
     return True
 
+# --------------------------------- #
 #
-# Application Functions
+# Get Excel Workbook, Sheet, and Data
 #
 def getExcelPath(fileName):
   root = tkinter.Tk()
@@ -63,7 +64,6 @@ def getExcelPath(fileName):
   print('[\033[92mx\033[0m] Select '+fileName+'-File in dialog')
   time.sleep(2)
   return filePath
-
 def getExcelSheet(filePath, fileName, sheetName):
   try:
     print(" |\n[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
@@ -75,7 +75,10 @@ def getExcelSheet(filePath, fileName, sheetName):
     clearConsole()
     print(' \033[91m*\033[0m Something went wrong while loading the '+fileName+' File.\n\n Make sure\n \033[93m*\033[0m you \033[93mclose the file\033[0m before running the script.\n \033[93m*\033[0m there is an \033[93m"'+sheetName+'"\033[0m Sheet.\n')
     exit()
-    
+
+#
+# Ask for PID Input
+#
 def askForPid():
   printInfoBlock('Set P&ID you want to filter', 'cyan')
   print('')
@@ -86,6 +89,10 @@ def askForPid():
     else: eraseLastLine()
   return pid
 
+#
+# Ask for Typical Input
+# Search if Typical exists and return all typical tools from database
+#
 def askAndReturnFilterTools(pid):
   printInfoBlock('Set Typicals you want to filter', 'cyan')
   printListItem('Seperate multiple typicals with semicolons: ;', 'yellow')
@@ -105,7 +112,6 @@ def askAndReturnFilterTools(pid):
       print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
       print('P&ID: '+pid)
   return filterTools
-
 def getFilterTools(typical):
   filterTools = None
   if typical in typicals:

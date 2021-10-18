@@ -25,30 +25,30 @@ def printInfoBlock(text, color = '0'):
   print(' \033['+color+'m'+text+'\033[0m ')
   print('-'+l*'-'+'-')
 
-def getMasterPath():
+def getExcelPath(fileName):
   root = tkinter.Tk()
   root.withdraw()
-  print('[ ] Select master file in dialog')
+  print('[ ] Select '+fileName+'-File in dialog')
   time.sleep(.8)
   filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
   root.destroy()
   clearConsole()
   if(filePath == ''):
     exit()
-  print('[\033[92mx\033[0m] Select master file in dialog')
+  print('[\033[92mx\033[0m] Select '+fileName+'-File in dialog')
   time.sleep(2)
   return filePath
 
-def getMasterSheet(filePath):
+def getExcelSheet(filePath, fileName, sheetName):
   try:
     print(" |\n[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
-    master_wb = load_workbook(filePath)
+    wb = load_workbook(filePath)
     eraseLastLine()
     print("[\033[92mx\033[0m] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m\n")
-    return master_wb.active
+    return wb[sheetName]
   except:
     clearConsole()
-    print('Something went wrong while loading the master file. Make sure you \033[93mclose the file\033[0m before running the script.\n')
+    print('Something went wrong while loading the '+fileName+'-File. Make sure you \033[93mclose the file\033[0m before running the script.\n')
     exit()
     
 def askForPid():
@@ -79,7 +79,7 @@ def askAndGetTypicalFunction(pid):
 def getFilterFunction(typical):
   typicalFilterFunction = None
   if typical in typicals:
-    typicalFilterFunction = typicals[typical]
+    typicalFilterFunction = typicals[typical][0]
   return typicalFilterFunction
 
 def getFilteredData(filterFunction, pid, master_sheet):

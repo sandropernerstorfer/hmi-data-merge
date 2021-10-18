@@ -76,3 +76,6 @@ def P_AinHART_Filter(pid, master_sheet):
   
   entries.insert(0, header)    
   return entries
+
+def P_AinHART_Merge():
+  return 'merge function'

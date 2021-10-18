@@ -9,8 +9,8 @@ clearConsole()
 #
 # Get Master File Path and load Worksheet
 #
-filePath = getMasterPath()
-master_ws = getMasterSheet(filePath)
+filePath = getExcelPath('Master')
+master_ws = getExcelSheet(filePath, 'Master', 'Index')
 #
 # Logic Circle Start  |  Take Input-Values, Filter Data, Save Sheet
 #
@@ -62,6 +62,20 @@ while True:
 
 # ------------------------------------------------------------------------------------------- TODO Saving Logic #
 
+# filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
+# master_ws = getExcelSheet(filePath, 'ProcessLibraryOnlineConfigTool', typical)
+
+
+
+
+
+
+
+
+
+
+
+exit()
 # Instanciate destination workbook & sheet
 print('Creating new Excel-Workbook and importing Data ...')
 wb = Workbook()

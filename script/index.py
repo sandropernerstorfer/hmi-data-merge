@@ -44,11 +44,11 @@ while True:
   #
   # Print filtered list result-infos
   #
-  printFilterResults(entries)
+  printFilterResults(entries, pid)
   #
   # Get user confirmation for continuing with populating new sheet
   #
-  confirmation = getUserConfirmation('Process and populate new Excel-File?')
+  confirmation = getUserConfirmation('Continue to \033[92mMaster | ProcessLibrary\033[0m merging stage?')
   clearConsole()
   if(confirmation == True): break
   else:
@@ -60,7 +60,7 @@ while True:
       exit()
 
 
-# ------------------------------------------------------------------------------------------- TODO Saving Logic #
+# ------------------------------------------------------------------------------------------- TODO Merge and Save Logic #
 
 # filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
 # master_ws = getExcelSheet(filePath, 'ProcessLibraryOnlineConfigTool', typical)

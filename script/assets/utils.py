@@ -87,9 +87,9 @@ def getFilteredData(filterFunction, pid, master_sheet):
   except: convertedPid = pid
   return filterFunction(convertedPid, master_sheet)
 
-def printFilterResults(entries):
+def printFilterResults(entries, pid):
   print('')
-  printInfoBlock('Found '+str(len(entries) - 1)+' entries.', 'cyan')
+  printInfoBlock('Found '+str(len(entries) - 1)+' entries with PID: '+pid, 'cyan')
   printInfoBlock('First: '+entries[1][0]+' ... Last: '+entries[-1][0], 'cyan')
   print('')
 

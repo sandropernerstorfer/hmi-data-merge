@@ -2,9 +2,7 @@ def P_AinHART_Filter(instrumentRows):
   
   import re
   from assets.database import safetyAreas  
-  
-  # Variables, Row & Col Locations
-  header = ['full-tag', 'label', 'description', 'area', 'range-min', 'range-max', 'unit']
+
   typeCol   = 6
   tagCol    = 7
   descCol   = 10
@@ -20,10 +18,7 @@ def P_AinHART_Filter(instrumentRows):
   entries = []
   for key, *values in instrumentRows:
     
-    row = [v for v in values]
-    row.insert(0, None)   # None, None, is just for easier indexing
-    row.insert(0, None)
-    row.insert(0, None)
+    row = [None, None, None] + [v for v in values]     # 3 * None is just for easier indexing
 
     desc = row[descCol]
     

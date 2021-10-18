@@ -64,7 +64,7 @@ def askForPid():
 def printPidFilterResult(entries, pid, color):
   printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
   if(len(entries) > 0):
-    printInfoBlock('First: ... Last:', color)
+    printInfoBlock('First: '+entries[0][4]+str(entries[0][5])+' ... Last: '+entries[-1][4]+str(entries[-1][5]), color)
   print('')
 
 def askAndGetTypicalFunction(pid):
@@ -84,7 +84,7 @@ def askAndGetTypicalFunction(pid):
       clearConsole()
       print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
       print('P&ID: '+pid)
-  return [filterFunction, typical]
+  return filterFunction
 
 def getFilterFunction(typical):
   typicalFilterFunction = None

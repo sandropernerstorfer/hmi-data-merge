@@ -33,12 +33,11 @@ while True:
       printPidFilterResult(allElements, pid, 'red')
       print('\033[91m*\033[0m No Elements with given PID found. Try searching again.\n')
       continue
-    else:
-      printPidFilterResult(allElements, pid, 'green')
+    else: printPidFilterResult(allElements, pid, 'green')
     #
     # Typical-Input Circle Start | Ask for typicals, search and get filter function
     #
-    typicalFilterFunction, typical = askAndGetTypicalFunction(pid)
+    typicalFilterFunction = askAndGetTypicalFunction(pid)
     #
     # Get filtered list with Typical-Function
     #

@@ -1,17 +1,8 @@
 def P_AinHART_Filter(instrumentRows, filterTypes):
   import re
   from assets.database import safetyAreas
-
-  typeCol   = 6
-  tagCol    = 7
-  descCol   = 10
-  rangeCol  = 46
-  unitCol   = 47
-  routeCol  = 29
-  sCol1     = 34
-  sCol2     = 35
-  sCol3     = 36
-  locCol    = 5
+  from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
+  
   
   # Loop through Sheet-Rows and save elements with PID in list
   entries = []
@@ -19,31 +10,31 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
     
     row = [None, None, None] + [v for v in values]     # 3 * None is just for easier indexing
 
-    desc = row[descCol]
+    desc = row[descColumn]
     
-    unit = row[unitCol]
-    if row[unitCol] == 'NA': unit = None
+    unit = row[unitColumn]
+    if row[unitColumn] == 'NA': unit = None
     
-    if(len(row[typeCol]) == 2 and row[typeCol][-1] == 'C'):
-      t = list(row[typeCol])
+    if(len(row[typeColumn]) == 2 and row[typeColumn][-1] == 'C'):
+      t = list(row[typeColumn])
       t[-1] = 'I'
-      row[typeCol] = ''.join(t)
-    fullTag = row[typeCol] + str(row[tagCol])
+      row[typeColumn] = ''.join(t)
+    fullTag = row[typeColumn] + str(row[tagColumn])
     
     label = fullTag
-    if(row[sCol1] != None or row[sCol2] != None or row[sCol3] != None):
+    if(row[safetyColumn1] != None or row[safetyColumn2] != None or row[safetyColumn3] != None):
       label += '_S'
-    elif(row[routeCol] == 'D'):
+    elif(row[routeColumn] == 'D'):
       label += '_P'
       
     area = 'area01'
-    if row[locCol] in safetyAreas:
-      area = safetyAreas[row[locCol]]
+    if row[locationColumn] in safetyAreas:
+      area = safetyAreas[row[locationColumn]]
         
     rangeMin = None
     rangeMax = None
-    if(row[rangeCol] != None):
-      fullRange = row[rangeCol].strip()
+    if(row[rangeColumn] != None):
+      fullRange = row[rangeColumn].strip()
       if(fullRange == '' or fullRange == '...' or fullRange == '…'):
         rangeMin = None
         rangeMax = None

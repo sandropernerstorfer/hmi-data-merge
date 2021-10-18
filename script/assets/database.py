@@ -17,5 +17,15 @@ typicals = {
 #
 # Sheet Row & Column Locations
 #
-firstRow  = 8
-pidColumn = 3
+firstRow          = 8
+pidColumn         = 3
+locationColumn    = 5
+typeColumn        = 6
+tagColumn         = 7
+descColumn        = 10
+rangeColumn       = 46
+unitColumn        = 47
+routeColumn       = 29
+safetyColumn1     = 34
+safetyColumn2     = 35
+safetyColumn3     = 36

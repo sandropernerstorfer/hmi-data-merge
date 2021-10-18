@@ -35,7 +35,7 @@ while True:
       continue
     else: printPidFilterResult(allElements, pid, 'green')
     #
-    # Typical-Input Circle Start | Ask for typicals, search and get filter function
+    # Typical-Input Circle Start | Ask for typicals, search and get filter function ------------------------------------------------------------------ TODO Ab hier - änderungen für auswahl mehrerer typicals
     #
     filterFunction = askAndReturnFilterFunction(pid)
     #
@@ -55,7 +55,7 @@ while True:
   #
   printTypicalFilterResults(entries, typical)
   #
-  # Get user confirmation for continuing with populating new sheet
+  # Get user confirmation for continuing with populating new sheet ----------------------------------------------------------------------------------- TODO Bis hier
   #
   confirmation = getUserConfirmation('Continue to \033[92mMaster | ProcessLibrary\033[0m merging stage?')
   clearConsole()
@@ -84,7 +84,7 @@ while True:
 
 
 
-exit()
+
 # Instanciate destination workbook & sheet
 print('Creating new Excel-Workbook and importing Data ...')
 wb = Workbook()

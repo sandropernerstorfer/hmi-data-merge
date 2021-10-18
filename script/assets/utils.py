@@ -15,7 +15,7 @@ def clearConsole():
 
 def printInfoBlock(text, color = '0'):
   l = len(text)
-  if color == 'blue':     color = '94'
+  if color   == 'blue':       color = '94'
   elif color == 'red':      color = '91'
   elif color == 'yellow':   color = '93'
   elif color == 'green':    color = '92'
@@ -48,7 +48,7 @@ def getExcelSheet(filePath, fileName, sheetName):
     return wb[sheetName]
   except:
     clearConsole()
-    print('Something went wrong while loading the '+fileName+'-File. Make sure you \033[93mclose the file\033[0m before running the script.\n')
+    print(' \033[91m*\033[0m Something went wrong while loading the '+fileName+' File.\n\n Make sure\n \033[93m*\033[0m you \033[93mclose the file\033[0m before running the script.\n \033[93m*\033[0m there is an \033[93m"'+sheetName+'"\033[0m Sheet.\n')
     exit()
     
 def askForPid():

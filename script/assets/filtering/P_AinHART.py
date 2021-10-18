@@ -4,7 +4,6 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
   from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
   
   
-  # Loop through Sheet-Rows and save elements with PID in list
   entries = []
   for key, *values in instrumentRows:
     
@@ -53,6 +52,3 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
     entries.append([fullTag, label, desc, area, rangeMin, rangeMax, unit])
   
   return [entries, 'P_AinHART']
-
-def P_AinHART_Merge():
-  return 'merge function'

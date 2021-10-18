@@ -65,9 +65,8 @@ def P_AinHART_Filter(master_ws):
         else:
           rangeMin = splitRanges[0]
           rangeMax = splitRanges[1]
+    entries.append([fullTag, label, desc, area, rangeMin, rangeMax, unit])
   
-  if(len(entries) > 0):
-    entries.insert(0, header)    
   return [entries, 'P_AinHART']
 
 def P_AinHART_Merge():

@@ -4,15 +4,15 @@ from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
 from assets.database import typicals
 
+# --------------------------------- #
+#
+# Console Functions
+#
 def eraseLastLine():
-  CURSOR_UP_ONE = '\x1b[1A' 
-  ERASE_LINE = '\x1b[2K'
-  sys.stdout.write(CURSOR_UP_ONE) 
-  sys.stdout.write(ERASE_LINE)
-
+  sys.stdout.write('\x1b[1A') 
+  sys.stdout.write('\x1b[2K')
 def clearConsole():
   system('cls||clear')
-
 def printInfoBlock(text, color = '0'):
   l = len(text)
   if color   == 'blue':     color = '94'
@@ -20,11 +20,28 @@ def printInfoBlock(text, color = '0'):
   elif color == 'yellow':   color = '93'
   elif color == 'green':    color = '92'
   elif color == 'cyan':     color = '96'
-  
   print('-'+l*'-'+'-')
   print(' \033['+color+'m'+text+'\033[0m ')
   print('-'+l*'-'+'-')
+def printPidFilterResult(entries, pid, color):
+  printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
+  if(len(entries) > 0):
+    printInfoBlock('First: '+entries[0][4]+str(entries[0][5])+' ... Last: '+entries[-1][4]+str(entries[-1][5]), color)
+  print('')
+def printTypicalFilterResults(entries, typical):
+  print('')
+  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'cyan')
+  print('')
+def getUserConfirmation(text):
+  confirmation = input(text+' [\033[92m y\033[0m | \033[91mn\033[0m ]: ')
+  if(confirmation != 'y' and confirmation != 'yes' and confirmation != ''):
+    return False
+  else:
+    return True
 
+#
+# Application Functions
+#
 def getExcelPath(fileName):
   root = tkinter.Tk()
   root.withdraw()
@@ -61,17 +78,11 @@ def askForPid():
     else: eraseLastLine()
   return pid
 
-def printPidFilterResult(entries, pid, color):
-  printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
-  if(len(entries) > 0):
-    printInfoBlock('First: '+entries[0][4]+str(entries[0][5])+' ... Last: '+entries[-1][4]+str(entries[-1][5]), color)
-  print('')
-
-def askAndGetTypicalFunction(pid):
+def askAndReturnFilterFunction(pid):
   printInfoBlock('Set Typicals you want to filter', 'cyan')
   print('')
   while True:
-    typical = input('Typicals (seperate with ; --  WIP): ')
+    typical = input('Typicals: [seperate with ;] ')
     typical = typical.strip()
     if(typical == None or typical == ''):
       eraseLastLine()
@@ -87,19 +98,7 @@ def askAndGetTypicalFunction(pid):
   return filterFunction
 
 def getFilterFunction(typical):
-  typicalFilterFunction = None
+  filterFunction = None
   if typical in typicals:
-    typicalFilterFunction = typicals[typical][0]
-  return typicalFilterFunction
-
-def printTypicalFilterResults(entries, typical):
-  print('')
-  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'cyan')
-  print('')
-
-def getUserConfirmation(text):
-  confirmation = input(text+' [\033[92m y\033[0m | \033[91mn\033[0m ]: ')
-  if(confirmation != 'y' and confirmation != 'yes' and confirmation != ''):
-    return False
-  else:
-    return True
+    filterFunction = typicals[typical][0]
+  return filterFunction

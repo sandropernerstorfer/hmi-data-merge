@@ -37,11 +37,11 @@ while True:
     #
     # Typical-Input Circle Start | Ask for typicals, search and get filter function
     #
-    typicalFilterFunction = askAndGetTypicalFunction(pid)
+    filterFunction = askAndReturnFilterFunction(pid)
     #
     # Get filtered list with Typical-Function
     #
-    entries, typical = typicalFilterFunction(allElements)
+    entries, typical = filterFunction(allElements)
     if(entries == None):
       clearConsole()
       printInfoBlock('Found 0 entries.', 'red')

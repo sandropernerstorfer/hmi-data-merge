@@ -1,4 +1,9 @@
-from assets.database import firstRow, pidColumn, locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
+from assets.database import (
+  firstRow, pidColumn, locationColumn,
+  typeColumn, tagColumn, descColumn,
+  rangeColumn, unitColumn, routeColumn,
+  safetyColumn1, safetyColumn2, safetyColumn3
+)
 
 def getAllWithPid(pid, master_ws):
   

@@ -1,4 +1,4 @@
-from assets.filtering.P_AinHART import *
+from assets.filtering.P_AinHART import P_AinHART_Filter
 
 #
 # --------------------------------------------------------------------------------------------------------- Available Safety Areas

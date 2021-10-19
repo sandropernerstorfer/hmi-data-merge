@@ -92,22 +92,22 @@ print(finalLists[0][1])   # Typical
 
 
 # Instanciate destination workbook & sheet
-# print('Creating new Excel-Workbook and importing Data ...')
-# wb = Workbook()
-# ws = wb.active
-# ws.title = pid+'-Data'
+print('Creating new Excel-Workbook and importing Data ...')
+wb = Workbook()
+ws = wb.active
+ws.title = pid+'-Data'
 
-# # Populate new workbook/sheet
-# for row in entries:
-#   ws.append(row)
+# Populate new workbook/sheet
+for row in finalLists[0][0]:
+  ws.append(row)
 
-# # Save new file in 'output' folder
-# try:
-#   wb.save('./script/output/'+pid+'-processed.xlsx')
-#   clearConsole()
-#   printInfoBlock('File saved in "output" folder.', 'green')
-#   print('')
-# except:
-#   clearConsole()
-#   print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
-#   exit()
+# Save new file in 'output' folder
+try:
+  wb.save('./script/output/'+pid+'-processed.xlsx')
+  clearConsole()
+  printInfoBlock('File saved in "output" folder.', 'green')
+  print('')
+except:
+  clearConsole()
+  print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
+  exit()

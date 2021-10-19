@@ -83,7 +83,12 @@ def getExcelSheet(filePath, fileName, sheetName):
     return wb[sheetName]
   except:
     clearConsole()
-    print(' \033[91m*\033[0m Something went wrong while loading the '+fileName+' File.\n\n Make sure\n \033[93m*\033[0m you \033[93mclose the file\033[0m before running the script.\n \033[93m*\033[0m there is an \033[93m"'+sheetName+'"\033[0m Sheet.\n')
+    # print(' \033[91m*\033[0m Something went wrong while loading the '+fileName+' File.\n\n Make sure\n \033[93m*\033[0m you \033[93mclose the file\033[0m before running the script.\n \033[93m*\033[0m there is an \033[93m"'+sheetName+'"\033[0m Sheet.\n')
+    printListItem('Something went wrong while loading the '+fileName+' File.', 'red')
+    print('\nMake sure ...')
+    printListItem('you \033[93mclose the file\033[0m before running the script.', 'yellow')
+    printListItem('there is an \033[93m"'+sheetName+'"\033[0m Sheet.','yellow')
+    print('')
     exit()
 
 #
@@ -106,6 +111,7 @@ def askForPid():
 #
 def askAndReturnFilterTools():
   printInfoBlock('Set Typicals you want to filter', 'cyan')
+  printListItem('Typical names have to be exact. Mind lower and uppercase.', 'cyan')
   printListItem('Seperate multiple typicals with semicolons: ;', 'cyan')
   print('')
   while True:

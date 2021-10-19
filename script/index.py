@@ -1,6 +1,7 @@
 from openpyxl import Workbook
 from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *
+from assets.database import sheetName
 
 # --------------------------------- #
 #
@@ -11,7 +12,7 @@ clearConsole()
 # Get Master File Path and load Worksheet
 #
 filePath = getExcelPath('Master')
-master_ws = getExcelSheet(filePath, 'Master', 'Index')
+master_ws = getExcelSheet(filePath, 'Master', sheetName)
 #
 # Logic Circle Start  |  Take Input-Values, Filter Data, Save Sheet
 #
@@ -75,8 +76,9 @@ while True:
 
 
 # ------------------------------------------------------------------------------------------- TODO Merge and Save Logic #
-print(finalLists[0][0])   # List
-print(finalLists[0][1])   # Typical
+# print(finalLists[0][0])   # List
+# print(finalLists[0][1])   # Typical
+
 # filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
 # master_ws = getExcelSheet(filePath, 'ProcessLibraryOnlineConfigTool', typical)
 

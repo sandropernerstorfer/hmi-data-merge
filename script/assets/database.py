@@ -15,8 +15,9 @@ typicals = {
 }
 
 #
-# --------------------------------------------------------------------------------------------------------- Sheet Row & Column Locations
+# --------------------------------------------------------------------------------------------------------- Sheet Variables/Infos - Row & Column Locations
 #
+sheetName         = 'Index'
 firstRow          = 8
 pidColumn         = 3
 locationColumn    = 5

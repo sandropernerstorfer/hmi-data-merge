@@ -1,8 +1,6 @@
 def P_AinHART_Filter(instrumentRows, filterTypes):
-  import re
   from assets.database import safetyAreas
   from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
-  
   
   entries = []
   for row in instrumentRows:

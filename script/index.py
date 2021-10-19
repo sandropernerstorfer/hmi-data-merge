@@ -1,4 +1,3 @@
-from typing import final
 from openpyxl import Workbook
 from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *

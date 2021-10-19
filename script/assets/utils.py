@@ -102,6 +102,7 @@ def askForPid():
 #
 # Ask for Typical Input
 # Search if Typicals exists and return all typical tools from database
+# @return -> list[] of lists[filterFunction, typicalName]
 #
 def askAndReturnFilterTools():
   printInfoBlock('Set Typicals you want to filter', 'cyan')

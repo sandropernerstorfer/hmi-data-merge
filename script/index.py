@@ -36,15 +36,15 @@ while True:
       continue
     else: printPidFilterResult(allElements, pid, 'green')
     #
-    # Typical-Input Circle Start | Ask for typicals, search and get filter functions + not found error messages
+    # Typical-Input Circle Start | Ask for typicals, search and get filter functions
     #
     filterToolsList = askAndReturnFilterTools()
     #
     # Get filtered lists with Typical-Functions and print results
     #
-    finalLists = [] # this stores all final filtered lists with typical name
+    finalLists = [] # this stores all final filtered lists + typical name
     for filterTools in filterToolsList:
-      filterResults = filterTools[0](allElements, filterTools[1]) # returns entries, typical name
+      filterResults = filterTools[0](allElements, filterTools[1])     # returns [entries, typical name]
       printTypicalFilterResults(filterResults[0], filterResults[1])
       if(len(filterResults) > 0):
         finalLists.append(filterResults)

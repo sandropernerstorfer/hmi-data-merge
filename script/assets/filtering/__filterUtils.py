@@ -1,6 +1,6 @@
+from assets.database import firstRow, pidColumn, locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
+
 def getAllWithPid(pid, master_ws):
-  
-  from assets.database import firstRow, pidColumn
   
   try: pid = int(pid)
   except: pid = pid
@@ -16,7 +16,8 @@ def getAllWithPid(pid, master_ws):
   
   return elements
 
-def convertControllerToInput(type):
+def convertControllerToInput(row):
+  type = row[typeColumn]
   try:
     type = type.strip()
   finally:
@@ -26,29 +27,37 @@ def convertControllerToInput(type):
       type = ''.join(t)
   return type
 
-def createFullTag(type, tag):
+def createFullTag(type, row):
+  tag = row[tagColumn]
   return type + str(tag)
 
-def getUnit(unit):
+def getDescription(row):
+  return row[descColumn]
+
+def getUnit(row):
+  unit = row[unitColumn]
   if(unit == 'NA'):   # Sheet exception
     return None
   else: return unit
 
-def createLabel(fullTag, route, safetyColumns):
+def createLabel(fullTag, row):
+  safetyColumns = [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]]
+  route = row[routeColumn]
   if any(safetyColumns):
     return fullTag + '_S'
   elif route == 'D':
     return fullTag + '_P'
   else: return fullTag
 
-def findSafetyArea(location):
+def findSafetyArea(row):
+  location = row[locationColumn]
   from assets.database import safetyAreas
   if location in safetyAreas:
     return safetyAreas[location]
   else: return 'area01'
   
-def createMinMaxRange(fullRange):
-  
+def createMinMaxRange(row):
+  fullRange = row[rangeColumn]
   if(fullRange == None or fullRange == '' or fullRange == '…'):
     return [None, None]
   

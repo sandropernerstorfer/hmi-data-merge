@@ -1,24 +1,23 @@
+from assets.filtering.__filterUtils import convertControllerToInput, createFullTag, getDescription, getUnit, createLabel, findSafetyArea, createMinMaxRange, tryNumericTypeCoercion
+
 def P_AinHART_Filter(instrumentRows, filterTypes):
-  from assets.filtering.__filterUtils import convertControllerToInput, createFullTag, getUnit, createLabel, findSafetyArea, createMinMaxRange, tryNumericTypeCoercion
-  from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
-  
   entries = []
   for row in instrumentRows:
   
-    type = convertControllerToInput(row[typeColumn])
+    type = convertControllerToInput(row)
     if type not in filterTypes: continue
     
-    fullTag = createFullTag(type, row[tagColumn])
+    fullTag = createFullTag(type, row)
     
-    desc = row[descColumn]
+    desc = getDescription(row)
     
-    unit = getUnit(row[unitColumn])
+    unit = getUnit(row)
     
-    label = createLabel(fullTag, row[routeColumn], [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]])
+    label = createLabel(fullTag, row)
     
-    area = findSafetyArea(row[locationColumn])
+    area = findSafetyArea(row)
     
-    minRange, maxRange = createMinMaxRange(row[rangeColumn])
+    minRange, maxRange = createMinMaxRange(row)
     minRange = tryNumericTypeCoercion(minRange)
     maxRange = tryNumericTypeCoercion(maxRange)
     

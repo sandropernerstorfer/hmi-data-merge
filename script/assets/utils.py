@@ -103,7 +103,7 @@ def askForPid():
 # Ask for Typical Input
 # Search if Typicals exists and return all typical tools from database
 #
-def askAndReturnFilterTools(pid):
+def askAndReturnFilterTools():
   printInfoBlock('Set Typicals you want to filter', 'cyan')
   printListItem('Seperate multiple typicals with semicolons: ;', 'cyan')
   print('')

@@ -91,27 +91,51 @@ def askForPid():
 
 #
 # Ask for Typical Input
-# Search if Typical exists and return all typical tools from database
+# Search if Typicals exists and return all typical tools from database
 #
 def askAndReturnFilterTools(pid):
   printInfoBlock('Set Typicals you want to filter', 'cyan')
-  printListItem('Seperate multiple typicals with semicolons: ;', 'yellow')
+  printListItem('Seperate multiple typicals with semicolons: ;', 'cyan')
   print('')
   while True:
-    typical = input('Typicals: ')
-    typical = typical.strip()
-    if(typical == None or typical == ''):
+    typicals = input('Typicals: ')
+    
+    typicals = typicals.strip()
+    if(typicals == None or typicals == ''):
       eraseLastLine()
       continue
     
-    filterTools = getFilterTools(typical)
-    if(filterTools != None):
-      break
-    else:
-      clearConsole()
-      print('\033[93m*\033[0m Couldn\'t find "'+typical+'" in the typicals list. Try searching again.\n')
-      print('P&ID: '+pid)
-  return filterTools
+    print('')
+    
+    typicals = typicals.split(';')
+    
+    filterToolsList = []
+    notFoundMessages = []
+    for typical in typicals:
+      filterTools = getFilterTools(typical)
+      if(filterTools == None):
+        notFoundMessages.append('Couldn\'t find ">'+typical+'" in the database.')
+      else:
+        filterToolsList.append(filterTools)
+    
+    if(len(filterToolsList) == 0):
+      print('')
+      printListItem('None of the Typicals were found in the database.', 'red')
+      confirmation = getUserConfirmation('Want to enter the typicals again ?')
+      if(confirmation == True): continue
+      else: exit()
+    
+    if(len(notFoundMessages) > 0):
+      for msg in notFoundMessages:
+        printListItem(msg, 'yellow')
+      print('')
+      confirmation = getUserConfirmation('Want to enter the typicals again ?')
+      if(confirmation == True):
+        continue
+    
+    break
+  return filterToolsList
+
 def getFilterTools(typical):
   filterTools = None
   if typical in typicals:

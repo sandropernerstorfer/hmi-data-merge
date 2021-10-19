@@ -35,25 +35,29 @@ while True:
       continue
     else: printPidFilterResult(allElements, pid, 'green')
     #
-    # Typical-Input Circle Start | Ask for typicals, search and get filter function ------------------------------------------------------------------ TODO Ab hier - änderungen für auswahl mehrerer typicals
+    # Typical-Input Circle Start | Ask for typicals, search and get filter functions + not found error messages ------------------------------------------------------------------ TODO Ab hier - änderungen für auswahl mehrerer typicals
     #
-    filterFunction, filterTypes = askAndReturnFilterTools(pid)
+    filterToolsList = askAndReturnFilterTools(pid)
     #
-    # Get filtered list with Typical-Function
+    # Get filtered lists with Typical-Functions and print results
     #
-    entries, typical = filterFunction(allElements, filterTypes)
-    if(entries == None):
-      clearConsole()
-      printInfoBlock('Found 0 entries.', 'red')
+    finalLists = [] # this stores all final filtered lists with typical name
+    for filterTools in filterToolsList:
+      filterResults = filterTools[0](allElements, filterTools[1]) # returns entries, typical name
+      printTypicalFilterResults(filterResults[0], filterResults[1])
+      if(len(filterResults) > 0):
+        finalLists.append(filterResults)
+    #
+    # Check if there is at least 1 entry to continue with
+    #
+    if(len(finalLists) == 0):
+      printInfoBlock('Found no entries.', 'red')
       print('\nOne of following could be the reason:')
       printListItem('No entries found with given PID: '+pid, 'yellow')
-      printListItem('None of the entries fall into the given typical category: '+typical, 'yellow')
+      printListItem('None of the entries fall into the given typicals categories.', 'yellow')
       print('\nYou can try again using different parameters.')
     else: break
-  #
-  # Print filtered list result infos
-  #
-  printTypicalFilterResults(entries, typical)
+  
   #
   # Get user confirmation for continuing with populating new sheet ----------------------------------------------------------------------------------- TODO Bis hier
   #
@@ -70,7 +74,7 @@ while True:
 
 
 # ------------------------------------------------------------------------------------------- TODO Merge and Save Logic #
-
+print(finalLists)
 # filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
 # master_ws = getExcelSheet(filePath, 'ProcessLibraryOnlineConfigTool', typical)
 
@@ -86,22 +90,22 @@ while True:
 
 
 # Instanciate destination workbook & sheet
-print('Creating new Excel-Workbook and importing Data ...')
-wb = Workbook()
-ws = wb.active
-ws.title = pid+'-Data'
+# print('Creating new Excel-Workbook and importing Data ...')
+# wb = Workbook()
+# ws = wb.active
+# ws.title = pid+'-Data'
 
-# Populate new workbook/sheet
-for row in entries:
-  ws.append(row)
+# # Populate new workbook/sheet
+# for row in entries:
+#   ws.append(row)
 
-# Save new file in 'output' folder
-try:
-  wb.save('./script/output/'+pid+'-processed.xlsx')
-  clearConsole()
-  printInfoBlock('File saved in "output" folder.', 'green')
-  print('')
-except:
-  clearConsole()
-  print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
-  exit()
+# # Save new file in 'output' folder
+# try:
+#   wb.save('./script/output/'+pid+'-processed.xlsx')
+#   clearConsole()
+#   printInfoBlock('File saved in "output" folder.', 'green')
+#   print('')
+# except:
+#   clearConsole()
+#   print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
+#   exit()

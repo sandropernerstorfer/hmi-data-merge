@@ -1,3 +1,4 @@
+from typing import final
 from openpyxl import Workbook
 from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *
@@ -37,7 +38,7 @@ while True:
     #
     # Typical-Input Circle Start | Ask for typicals, search and get filter functions + not found error messages
     #
-    filterToolsList = askAndReturnFilterTools(pid)
+    filterToolsList = askAndReturnFilterTools()
     #
     # Get filtered lists with Typical-Functions and print results
     #
@@ -75,7 +76,8 @@ while True:
 
 
 # ------------------------------------------------------------------------------------------- TODO Merge and Save Logic #
-print(finalLists)
+print(finalLists[0][0])   # List
+print(finalLists[0][1])   # Typical
 # filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
 # master_ws = getExcelSheet(filePath, 'ProcessLibraryOnlineConfigTool', typical)
 

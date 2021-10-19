@@ -39,23 +39,39 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
         
     rangeMin = None
     rangeMax = None
-    if(row[rangeColumn] != None):
-      fullRange = row[rangeColumn].strip()
-      if(fullRange == '' or fullRange == '...' or fullRange == '…'):
+    fullRange = row[rangeColumn]
+    
+    if(fullRange == None or fullRange == '' or fullRange == '…'):
+      rangeMin = None
+      rangeMax = None
+    elif(isinstance(fullRange, int) or isinstance(fullRange, float)):
+      rangeMin = fullRange
+      rangeMax = None
+    elif(isinstance(fullRange, str)):
+      fullRange = fullRange.strip()
+      fullRange = fullRange.split('…')
+      if(len(fullRange) == 1):
+        fullRange = fullRange[0].split('-')   # exception with -
+      if(len(fullRange) == 1):
+        rangeMin = fullRange[0].strip()
+        rangeMax = None
+      elif(len(fullRange) == 2):
+        rangeMin = fullRange[0].strip()
+        rangeMax = fullRange[1].strip()
+      else:
         rangeMin = None
         rangeMax = None
-      else:
-        splitRanges = [int(d) for d in re.findall(r'-?\d+', fullRange)]
-        l = len(splitRanges)
-        if l == 0:
-          rangeMin = None
-          rangeMax = None
-        if l == 1:
-          rangeMin = splitRanges[0]
-          rangeMax = None
-        else:
-          rangeMin = splitRanges[0]
-          rangeMax = splitRanges[1]
+        
+      try: rangeMin = int(rangeMin)
+      except: 
+        try: rangeMin = float(rangeMin)
+        except: rangeMin = rangeMin
+        
+      try: rangeMax = int(rangeMax)
+      except: 
+        try: rangeMax = float(rangeMax)
+        except: rangeMax = rangeMax
+    
     entries.append([fullTag, label, desc, area, rangeMin, rangeMax, unit])
   
   return [entries, 'P_AinHART']

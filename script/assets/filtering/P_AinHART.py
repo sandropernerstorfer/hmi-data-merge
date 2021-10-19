@@ -19,7 +19,7 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
     unit = getUnit(row[unitColumn])
     
     # Generate Label
-    label = createLabel(fullTag, [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]])
+    label = createLabel(fullTag, row[routeColumn], [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]])
     
     # Generate Safety Area
     area = createSafetyArea(row[locationColumn])

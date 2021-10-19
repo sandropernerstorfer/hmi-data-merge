@@ -5,26 +5,19 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
   entries = []
   for row in instrumentRows:
   
-    # Instrument Type checking
     type = convertControllerToInput(row[typeColumn])
     if type not in filterTypes: continue
-
-    # Generate Full Tag
+    
     fullTag = createFullTag(type, row[tagColumn])
     
-    # Get Description
     desc = row[descColumn]
     
-    # Get Unit
     unit = getUnit(row[unitColumn])
     
-    # Generate Label
     label = createLabel(fullTag, row[routeColumn], [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]])
     
-    # Generate Safety Area
     area = findSafetyArea(row[locationColumn])
     
-    # Generate Min and Max Range
     minRange, maxRange = createMinMaxRange(row[rangeColumn])
     minRange = tryNumericTypeCoercion(minRange)
     maxRange = tryNumericTypeCoercion(maxRange)

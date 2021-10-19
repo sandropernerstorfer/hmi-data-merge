@@ -41,8 +41,34 @@ def createLabel(fullTag, route, safetyColumns):
     return fullTag + '_P'
   else: return fullTag
 
-def createSafetyArea(location):
+def findSafetyArea(location):
   from assets.database import safetyAreas
   if location in safetyAreas:
     return safetyAreas[location]
   else: return 'area01'
+  
+def createMinMaxRange(fullRange):
+  
+  if(fullRange == None or fullRange == '' or fullRange == '…'):
+    return [None, None]
+  
+  if(isinstance(fullRange, int) or isinstance(fullRange, float)):
+    return [fullRange, None]
+  
+  if(isinstance(fullRange, str)):
+    fullRange = fullRange.strip()
+    fullRange = fullRange.split('…')
+    if(len(fullRange) == 1):
+      fullRange = fullRange[0].split('-')
+    if(len(fullRange) == 1):
+      return [fullRange[0].strip(), None]
+    elif(len(fullRange) == 2):
+      return [fullRange[0].strip(), fullRange[1].strip()]
+      
+  return [None, None]
+
+def tryNumericTypeCoercion(value):
+  try: return int(value)
+  except:
+    try: return float(value)
+    except :return value

@@ -23,4 +23,4 @@ def P_AInHART_Filter(instrumentRows, filterTypes):
     
     entries.append([fullTag, label, desc, area, minRange, maxRange, unit])
   
-  return [entries, 'P_AinHART']
+  return [entries, 'P_AInHART']

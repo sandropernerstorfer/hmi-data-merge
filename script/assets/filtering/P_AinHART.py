@@ -7,18 +7,25 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
   entries = []
   for key, *values in instrumentRows:
     
-    row = [None, None, None] + [v for v in values]     # 3 * None is just for easier indexing
+    # Convert Controller definition into Input (FC -> FI)
+    type = values[typeColumn - 3]
+    try:
+      type = type.strip()
+    finally:
+      if(len(type) == 2 and type[-1] == 'C'):
+        t = list(type)
+        t[-1] = 'I'
+        type = ''.join(t)
+      if type not in filterTypes:
+        continue
+    
+    row = [None, None, None] + [v for v in values]     # 3 * None is just for easier index
 
+    fullTag = type + str(row[tagColumn])
     desc = row[descColumn]
     
     unit = row[unitColumn]
     if row[unitColumn] == 'NA': unit = None
-    
-    if(len(row[typeColumn]) == 2 and row[typeColumn][-1] == 'C'):
-      t = list(row[typeColumn])
-      t[-1] = 'I'
-      row[typeColumn] = ''.join(t)
-    fullTag = row[typeColumn] + str(row[tagColumn])
     
     label = fullTag
     if(row[safetyColumn1] != None or row[safetyColumn2] != None or row[safetyColumn3] != None):

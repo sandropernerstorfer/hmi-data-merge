@@ -25,3 +25,24 @@ def convertControllerToInput(type):
       t[-1] = 'I'
       type = ''.join(t)
   return type
+
+def createFullTag(type, tag):
+  return type + str(tag)
+
+def getUnit(unit):
+  if(unit == 'NA'):   # Sheet exception
+    return None
+  else: return unit
+
+def createLabel(fullTag, route, safetyColumns):
+  if any(safetyColumns):
+    return fullTag + '_S'
+  elif route == 'D':
+    return fullTag + '_P'
+  else: return fullTag
+
+def createSafetyArea(location):
+  from assets.database import safetyAreas
+  if location in safetyAreas:
+    return safetyAreas[location]
+  else: return 'area01'

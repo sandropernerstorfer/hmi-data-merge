@@ -1,6 +1,5 @@
 def P_AinHART_Filter(instrumentRows, filterTypes):
-  from assets.filtering.__filterUtils import convertControllerToInput
-  from assets.database import safetyAreas
+  from assets.filtering.__filterUtils import convertControllerToInput, createFullTag, getUnit, createLabel, createSafetyArea
   from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
   
   entries = []
@@ -10,21 +9,20 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
     type = convertControllerToInput(row[typeColumn])
     if type not in filterTypes: continue
 
-    fullTag = type + str(row[tagColumn])
+    # Generate Full Tag
+    fullTag = createFullTag(type, row[tagColumn])
+    
+    # Get Description
     desc = row[descColumn]
     
-    unit = row[unitColumn]
-    if row[unitColumn] == 'NA': unit = None
+    # Get Unit
+    unit = getUnit(row[unitColumn])
     
-    label = fullTag
-    if(row[safetyColumn1] != None or row[safetyColumn2] != None or row[safetyColumn3] != None):
-      label += '_S'
-    elif(row[routeColumn] == 'D'):
-      label += '_P'
-      
-    area = 'area01'
-    if row[locationColumn] in safetyAreas:
-      area = safetyAreas[row[locationColumn]]
+    # Generate Label
+    label = createLabel(fullTag, [row[safetyColumn1], row[safetyColumn2], row[safetyColumn3]])
+    
+    # Generate Safety Area
+    area = createSafetyArea(row[locationColumn])
         
     rangeMin = None
     rangeMax = None

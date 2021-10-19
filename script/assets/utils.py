@@ -37,9 +37,10 @@ def printPidFilterResult(entries, pid, color):
     printListItem('Last  -> '+entries[-1][4]+str(entries[-1][5]), 'green')
   print('')
 def printTypicalFilterResults(entries, typical):
-  print('')
-  printInfoBlock('Found '+str(len(entries))+' entries with Typical: '+typical, 'green')
-  print('')
+  if(len(entries) == 0):
+    color = 'red'
+  else: color = 'green'
+  printListItem('Found \033[92m'+str(len(entries))+'\033[0m with Typical: \033[92m'+typical+'\033[0m', color)
 def getUserConfirmation(text):
   confirmation = input(text+' [\033[92m y\033[0m | \033[91mn\033[0m ]: ')
   if(confirmation != 'y' and confirmation != 'yes' and confirmation != ''):
@@ -109,19 +110,23 @@ def askAndReturnFilterTools(pid):
     
     typicals = typicals.split(';')
     
+    if(typicals[-1] == ''):
+      typicals.pop(-1)
+    
     filterToolsList = []
     notFoundMessages = []
     for typical in typicals:
-      filterTools = getFilterTools(typical)
+      filterTools = getFilterTools(typical.strip())
       if(filterTools == None):
-        notFoundMessages.append('Couldn\'t find ">'+typical+'" in the database.')
+        notFoundMessages.append('Couldn\'t find Typical: \''+typical+'\' in the database.')
       else:
         filterToolsList.append(filterTools)
     
     if(len(filterToolsList) == 0):
-      print('')
       printListItem('None of the Typicals were found in the database.', 'red')
+      print('')
       confirmation = getUserConfirmation('Want to enter the typicals again ?')
+      print('')
       if(confirmation == True): continue
       else: exit()
     
@@ -130,6 +135,7 @@ def askAndReturnFilterTools(pid):
         printListItem(msg, 'yellow')
       print('')
       confirmation = getUserConfirmation('Want to enter the typicals again ?')
+      print('')
       if(confirmation == True):
         continue
     

@@ -61,6 +61,7 @@ while True:
   #
   # Get user confirmation for continuing with populating new sheet ----------------------------------------------------------------------------------- TODO Bis hier
   #
+  print('')
   confirmation = getUserConfirmation('Continue to \033[92mMaster | ProcessLibrary\033[0m merging stage?')
   clearConsole()
   if(confirmation == True): break

@@ -15,3 +15,13 @@ def getAllWithPid(pid, master_ws):
       elements.append(row)
   
   return elements
+
+def convertControllerToInput(type):
+  try:
+    type = type.strip()
+  finally:
+    if(len(type) == 2 and type[-1] == 'C'):
+      t = list(type)
+      t[-1] = 'I'
+      type = ''.join(t)
+  return type

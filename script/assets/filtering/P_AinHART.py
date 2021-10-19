@@ -1,20 +1,14 @@
 def P_AinHART_Filter(instrumentRows, filterTypes):
+  from assets.filtering.__filterUtils import convertControllerToInput
   from assets.database import safetyAreas
   from assets.database import locationColumn, typeColumn, tagColumn, descColumn, rangeColumn, unitColumn, routeColumn, safetyColumn1, safetyColumn2, safetyColumn3
   
   entries = []
   for row in instrumentRows:
-    # Convert Controller definition into Input (FC -> FI)
-    type = row[typeColumn]
-    try:
-      type = type.strip()
-    finally:
-      if(len(type) == 2 and type[-1] == 'C'):
-        t = list(type)
-        t[-1] = 'I'
-        type = ''.join(t)
-      if type not in filterTypes:
-        continue
+  
+    # Instrument Type checking
+    type = convertControllerToInput(row[typeColumn])
+    if type not in filterTypes: continue
 
     fullTag = type + str(row[tagColumn])
     desc = row[descColumn]

@@ -19,28 +19,34 @@ consoleColorCodes = {
 def eraseLastLine():
   sys.stdout.write('\x1b[1A') 
   sys.stdout.write('\x1b[2K')
+  
 def clearConsole():
   system('cls||clear')
+  
 def printListItem(text,color = '0'):
   color = consoleColorCodes[color]
   print('\033['+color+'m*\033[0m '+text)
+  
 def printInfoBlock(text, color = '0'):
   l = len(text)
   color = consoleColorCodes[color]
   print('-'+l*'-'+'-')
   print(' \033['+color+'m'+text+'\033[0m ')
   print('-'+l*'-'+'-')
+  
 def printPidFilterResult(entries, pid, color):
   printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
   if(len(entries) > 0):
     printListItem('First -> '+entries[0][4]+str(entries[0][5]), 'green')
     printListItem('Last  -> '+entries[-1][4]+str(entries[-1][5]), 'green')
   print('')
+  
 def printTypicalFilterResults(entries, typical):
   if(len(entries) == 0):
     color = 'red'
   else: color = 'green'
   printListItem('Found \033[92m'+str(len(entries))+'\033[0m with Typical: \033[92m'+typical+'\033[0m', color)
+  
 def getUserConfirmation(text):
   confirmation = input(text+' [\033[92m y\033[0m | \033[91mn\033[0m ]: ')
   if(confirmation != 'y' and confirmation != 'yes' and confirmation != ''):
@@ -49,6 +55,8 @@ def getUserConfirmation(text):
     return True
 
 # --------------------------------- #
+#
+# Application Circle Functions
 #
 # Get Excel Workbook, Sheet, and Data
 #
@@ -65,6 +73,7 @@ def getExcelPath(fileName):
   print('[\033[92mx\033[0m] Select '+fileName+'-File in dialog')
   time.sleep(2)
   return filePath
+
 def getExcelSheet(filePath, fileName, sheetName):
   try:
     print(" |\n[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")

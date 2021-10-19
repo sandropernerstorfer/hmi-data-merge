@@ -35,7 +35,7 @@ while True:
       continue
     else: printPidFilterResult(allElements, pid, 'green')
     #
-    # Typical-Input Circle Start | Ask for typicals, search and get filter functions + not found error messages ------------------------------------------------------------------ TODO Ab hier - änderungen für auswahl mehrerer typicals
+    # Typical-Input Circle Start | Ask for typicals, search and get filter functions + not found error messages
     #
     filterToolsList = askAndReturnFilterTools(pid)
     #
@@ -59,7 +59,7 @@ while True:
     else: break
   
   #
-  # Get user confirmation for continuing with populating new sheet ----------------------------------------------------------------------------------- TODO Bis hier
+  # Get user confirmation for continuing with populating new sheet
   #
   print('')
   confirmation = getUserConfirmation('Continue to \033[92mMaster | ProcessLibrary\033[0m merging stage?')

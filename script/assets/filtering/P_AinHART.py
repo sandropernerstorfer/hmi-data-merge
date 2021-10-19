@@ -5,10 +5,9 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
   
   
   entries = []
-  for key, *values in instrumentRows:
-    
+  for row in instrumentRows:
     # Convert Controller definition into Input (FC -> FI)
-    type = values[typeColumn - 3]
+    type = row[typeColumn]
     try:
       type = type.strip()
     finally:
@@ -18,8 +17,6 @@ def P_AinHART_Filter(instrumentRows, filterTypes):
         type = ''.join(t)
       if type not in filterTypes:
         continue
-    
-    row = [None, None, None] + [v for v in values]     # 3 * None is just for easier index
 
     fullTag = type + str(row[tagColumn])
     desc = row[descColumn]

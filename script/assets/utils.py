@@ -2,7 +2,7 @@ import time, tkinter, sys
 from os import system
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
-from assets.database import typicals
+from assets.database import typicals, typeColumn, tagColumn
 
 # --------------------------------- #
 #
@@ -37,8 +37,8 @@ def printInfoBlock(text, color = '0'):
 def printPidFilterResult(entries, pid, color):
   printInfoBlock('Found '+str(len(entries))+' entries with PID: '+pid, color)
   if(len(entries) > 0):
-    printListItem('First -> '+entries[0][4]+str(entries[0][5]), 'green')
-    printListItem('Last  -> '+entries[-1][4]+str(entries[-1][5]), 'green')
+    printListItem('First -> '+entries[0][typeColumn]+str(entries[0][tagColumn]), 'green')
+    printListItem('Last  -> '+entries[-1][typeColumn]+str(entries[-1][tagColumn]), 'green')
   print('')
   
 def printTypicalFilterResults(entries, typical):

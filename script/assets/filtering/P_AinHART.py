@@ -26,17 +26,18 @@ def P_AInHART_Filter(instrumentRows, filterTypes):
   return [entries, 'P_AInHART']
 
 def P_AInHART_Merge(masterData, processLibData):
+  from assets.database import xls_key, xls_desc, xls_label, xls_tag, xls_area, xls_unit, xls_min, xls_max
   output = []
   for xrow in processLibData:
-    for row in masterData:
-      if(xrow[2] == row[0]):
-        xrow[4] = row[2]
-        xrow[5] = row[1]
-        xrow[6] = row[0]
-        xrow[7] = row[3]
-        xrow[8] = row[6]
-        xrow[10] = row[4]
-        xrow[11] = row[5]
+    for row in masterData:      # row[index] is corresponding to output order from above filter function
+      if(xrow[xls_key-1] == row[0]):
+        xrow[xls_desc-1]  = row[2]
+        xrow[xls_label-1] = row[1]
+        xrow[xls_tag-1]   = row[0]
+        xrow[xls_area-1]  = row[3]
+        xrow[xls_unit-1]  = row[6]
+        xrow[xls_min-1]   = row[4]
+        xrow[xls_max-1]   = row[5]
         break
     output.append(xrow)
   

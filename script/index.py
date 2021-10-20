@@ -137,6 +137,8 @@ for list in finalLists:
 # Save new file in 'output' folder
 #
 try:
+  defaultSheet = wb.get_sheet_by_name('Sheet')
+  wb.remove_sheet(defaultSheet)
   wb.save('./script/output/'+pid+'-processed.xlsx')
   clearConsole()
   printInfoBlock('File saved in "output" folder.', 'green')

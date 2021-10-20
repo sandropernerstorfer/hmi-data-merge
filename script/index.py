@@ -1,5 +1,6 @@
 from openpyxl import Workbook
 import xlrd
+import random
 from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *
 from assets.database import sheetName
@@ -80,7 +81,7 @@ while True:
 # print(finalLists[0][0])   # List
 # print(finalLists[0][1])   # Typical
 
-
+wb = Workbook()
 filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
 book = xlrd.open_workbook(filePath)
 
@@ -113,62 +114,28 @@ for list in finalLists: #--------- list = [listItems, TypicalName]
         xrow[8] = row[6]
         xrow[10] = row[4]
         xrow[11] = row[5]
-      break
+        break
     doneList.append(xrow)
 
+  for i in range (8):
+    doneList.pop(0)
+  doneList = sorted(doneList, key=lambda x: x[3])
   # Instanciate destination workbook & sheet
-  print('Creating new Excel-Workbook and importing Data ...')
-  wb = Workbook()
+  print('Creating '+list[1]+'-Sheet and importing Data ...')
+  # wb = Workbook()
   ws = wb.create_sheet(list[1])
 
   # Populate new workbook/sheet
   for row in doneList:
     ws.append(row)
 
-  # Save new file in 'output' folder
-  try:
-    wb.save('./script/output/'+pid+'-processed.xlsx')
-    clearConsole()
-    printInfoBlock('File saved in "output" folder.', 'green')
-    print('')
-  except:
-    clearConsole()
-    print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
-    exit()
-
-
-
-
-
-
-
-
-
-
-
-
-# Instanciate destination workbook & sheet
-# print('Creating new Excel-Workbook and importing Data ...')
-# wb = Workbook()
-# ws = wb.create_sheet('sheet-1')
-
-# # Populate new workbook/sheet
-# for row in finalLists[0][0]:
-#   ws.append(row)
-
-# ws = wb.create_sheet('sheet-2')  
-# for row in finalLists[0][0]:
-#   ws.append(row)
-  
-# ws.append([1])
-
-# # Save new file in 'output' folder
-# try:
-#   wb.save('./script/output/'+pid+'-processed.xlsx')
-#   clearConsole()
-#   printInfoBlock('File saved in "output" folder.', 'green')
-#   print('')
-# except:
-#   clearConsole()
-#   print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
-#   exit()
+# Save new file in 'output' folder
+try:
+  wb.save('./script/output/'+pid+'-processed.xlsx')
+  clearConsole()
+  printInfoBlock('File saved in "output" folder.', 'green')
+  print('')
+except:
+  clearConsole()
+  print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
+  exit()

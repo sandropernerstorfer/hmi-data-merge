@@ -47,7 +47,7 @@ while True:
       filterResults = filterTools[0](allElements, filterTools[1])     # returns [entries, typical name]
       printTypicalFilterResults(filterResults[0], filterResults[1])
       if(len(filterResults) > 0):
-        finalLists.append(filterResults)
+        finalLists.append(filterResults + [filterTools[2]])
     #
     # Check if there is at least 1 entry to continue with
     #
@@ -102,52 +102,40 @@ while True:
     else: exit()
   else: break
 
-
-for list in finalLists: #--------- list = [listItems, TypicalName]
+#
+# Loop through all saved typicals with their items
+# list = [listItems, typicalName]
+#
+for list in finalLists:
   
   #---------------- get xls sheet by typical name
   sheet = book.sheet_by_name(list[1])
   rowCount = sheet.nrows
-  #------------------------------------------------
   #----------------- get XLS data
   xlsData = []
   for row in range(sheet.nrows):
     xlsData.append(sheet.row_values(rowx=row))
-  #------------------------------------------------
   
-  # Loop through filtered rows
-  # on each iteration compare fullTags
-  # if match -> populate field
-  # -- row = filtered excel row
-  # INDEX ist hardcoded für P_AInHART atm
-  # ([fullTag, label, desc, area, minRange, maxRange, unit])
-  doneList = []
-  for xrow in xlsData:
-    for row in list[0]:
-      if(row[0] == xrow[2]):
-        xrow[4] = row[2]
-        xrow[5] = row[1]
-        xrow[6] = row[0]
-        xrow[7] = row[3]
-        xrow[8] = row[6]
-        xrow[10] = row[4]
-        xrow[11] = row[5]
-        break
-    doneList.append(xrow)
-
-  for i in range (8):
-    doneList.pop(0)
-  doneList = sorted(doneList, key=lambda x: x[3])
-  # Instanciate destination workbook & sheet
-  print('Creating '+list[1]+'-Sheet and importing Data ...')
-  # wb = Workbook()
+  #
+  # Call Merge function for current typical and get final dataset
+  #
+  doneList = list[2](list[0], xlsData)
+  
+  #
+  # Create Sheet on instanciated workbook object with Typical Name
+  #
+  printListItem('Creating '+list[1]+'-Sheet and importing Data ...', 'green')
   ws = wb.create_sheet(list[1])
 
-  # Populate new workbook/sheet
+  #
+  # Populate this sheet
+  #
   for row in doneList:
     ws.append(row)
 
+#
 # Save new file in 'output' folder
+#
 try:
   wb.save('./script/output/'+pid+'-processed.xlsx')
   clearConsole()

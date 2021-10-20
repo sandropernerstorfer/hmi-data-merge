@@ -87,3 +87,9 @@ def tryNumericTypeCoercion(value):
   except:
     try: return float(value)
     except :return value
+    
+def compressAndSortFinalData(dataSet):
+  for i in range (8):
+    dataSet.pop(0)
+  dataSet = sorted(dataSet, key=lambda x: x[3])
+  return dataSet

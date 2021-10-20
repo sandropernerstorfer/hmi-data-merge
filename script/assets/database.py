@@ -1,4 +1,4 @@
-from assets.filtering.P_AInHART import P_AInHART_Filter
+from assets.filtering.P_AInHART import P_AInHART_Filter, P_AInHART_Merge
 
 #
 # --------------------------------------------------------------------------------------------------------- Available Safety Areas
@@ -11,7 +11,7 @@ safetyAreas = {
 # --------------------------------------------------------------------------------------------------------- Available Typicals
 #
 typicals = {
-  'P_AInHART': [P_AInHART_Filter, ['AI', 'DI', 'FI', 'LI', 'PDI', 'PI', 'SI', 'TI', 'XI']]
+  'P_AInHART': [P_AInHART_Filter, ['AI', 'DI', 'FI', 'LI', 'PDI', 'PI', 'SI', 'TI', 'XI'], P_AInHART_Merge]
 }
 
 #

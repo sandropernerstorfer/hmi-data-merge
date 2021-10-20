@@ -124,7 +124,7 @@ for list in finalLists:
   #
   # Create Sheet on instanciated workbook object with Typical Name
   #
-  printListItem('Creating '+list[1]+'-Sheet and importing Data ...', 'green')
+  printListItem('Creating '+list[1]+' Sheet and importing Data ...', 'cyan')
   ws = wb.create_sheet(list[1])
 
   #
@@ -137,11 +137,14 @@ for list in finalLists:
 # Save new file in 'output' folder
 #
 try:
-  defaultSheet = wb.get_sheet_by_name('Sheet')
-  wb.remove_sheet(defaultSheet)
+  defaultSheet = wb['Sheet']
+  wb.remove(defaultSheet)
+except: pass
+
+try:
   wb.save('./script/output/'+pid+'-processed.xlsx')
-  clearConsole()
-  printInfoBlock('File saved in "output" folder.', 'green')
+  print('')
+  printInfoBlock('File for PID: '+pid+' saved in \'output\' folder.', 'green')
   print('')
 except:
   clearConsole()

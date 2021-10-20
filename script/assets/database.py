@@ -30,3 +30,13 @@ routeColumn       = 29
 safetyColumn1     = 34
 safetyColumn2     = 35
 safetyColumn3     = 36
+
+# nicht index sondern echte position
+xls_key = 3
+xls_desc = 5
+xls_label = 6
+xls_tag = 7
+xls_area = 8
+xls_unit = 9
+xls_min = 11
+xls_max = 12

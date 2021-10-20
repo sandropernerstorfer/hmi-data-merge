@@ -2,6 +2,7 @@ import time, tkinter, sys
 from os import system
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
+import xlrd
 from assets.database import typicals, typeColumn, tagColumn
 
 # --------------------------------- #
@@ -162,3 +163,37 @@ def getFilterTools(typical):
   if typical in typicals:
     filterTools = typicals[typical]
   return filterTools
+
+#
+# ProcessLib File Operations
+#
+def getProcessPath(fileName):
+  root = tkinter.Tk()
+  root.withdraw()
+  print('[ ] Select '+fileName+'-File in dialog')
+  time.sleep(.8)
+  filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
+  root.destroy()
+  clearConsole()
+  if(filePath == ''):
+    confirmation = getUserConfirmation('Want to search for ProcessLibraryOnlineConfigTool again ?')
+    if(confirmation == False): exit()
+    else: return False
+  print('[\033[92mx\033[0m] Select '+fileName+'-File in dialog')
+  time.sleep(2)
+  return filePath
+
+def getProcessFileData(filePath, fileName):
+  try:
+    print(" |\n[ ] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m")
+    book = xlrd.open_workbook(filePath)
+    eraseLastLine()
+    print("[\033[92mx\033[0m] Loading data from "+"\033[92m.../"+filePath.split('/')[-2]+'/'+filePath.split('/')[-1]+"\033[0m\n")
+    return book
+  except:
+    clearConsole()
+    printListItem('Something went wrong while loading the '+fileName+' File.', 'red')
+    print('\nMake sure ...')
+    printListItem('you \033[93mclose the file\033[0m before running the script.', 'yellow')
+    print('')
+    return None

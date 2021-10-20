@@ -1,6 +1,4 @@
 from openpyxl import Workbook
-import xlrd
-import random
 from assets.filtering.__filterUtils import getAllWithPid
 from assets.utils import *
 from assets.database import sheetName
@@ -81,9 +79,29 @@ while True:
 # print(finalLists[0][0])   # List
 # print(finalLists[0][1])   # Typical
 
+#
+# Instanciate Output File Object
+#
 wb = Workbook()
-filePath = getExcelPath('ProcessLibraryOnlineConfigTool')
-book = xlrd.open_workbook(filePath)
+#
+# File Input Circle for ProcessLib File
+#
+while True:
+  #
+  # Get Path of ProcessLib File
+  #
+  filePath = getProcessPath('ProcessLibraryOnlineConfigTool')
+  if(filePath == False): continue
+  #
+  # Get Excel Data from ProcessLib File
+  #
+  book = getProcessFileData(filePath, 'ProcessLibraryOnlineConfigTool')
+  if(book == None):
+    confirmation = getUserConfirmation('Want to search for the ProcessLibraryOnlineConfigTool File again ?')
+    if(confirmation == True): continue
+    else: exit()
+  else: break
+
 
 for list in finalLists: #--------- list = [listItems, TypicalName]
   

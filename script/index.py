@@ -65,8 +65,7 @@ while True:
   print('')
   confirmation = getUserConfirmation('Continue to \033[92mMaster | ProcessLibrary\033[0m merging stage?')
   clearConsole()
-  if(confirmation == True): break
-  else:
+  if(confirmation == False):
     confirmation = getUserConfirmation('Start again?')
     clearConsole()
     if(confirmation == True):
@@ -74,79 +73,78 @@ while True:
     else:
       exit()
 
+  #
+  # Instanciate Output File Object
+  #
+  wb = Workbook()
+  #
+  # File Input Circle for ProcessLib File
+  #
+  while True:
+    #
+    # Get Path of ProcessLib File
+    #
+    filePath = getProcessPath('ProcessLibraryOnlineConfigTool')
+    if(filePath == False): continue
+    #
+    # Get Excel Data from ProcessLib File
+    #
+    book = getProcessFileData(filePath, 'ProcessLibraryOnlineConfigTool')
+    if(book == None):
+      confirmation = getUserConfirmation('Want to search for the ProcessLibraryOnlineConfigTool File again ?')
+      if(confirmation == True): continue
+      else: exit()
+    else: break
 
-# ------------------------------------------------------------------------------------------- TODO Merge and Save Logic #
-# print(finalLists[0][0])   # List
-# print(finalLists[0][1])   # Typical
+  #
+  # Loop through all saved typicals with their items
+  # list = [listItems, typicalName]
+  #
+  for list in finalLists:
+    
+    #---------------- get xls sheet by typical name
+    sheet = book.sheet_by_name(list[1])
+    rowCount = sheet.nrows
+    #----------------- get XLS data
+    xlsData = []
+    for row in range(sheet.nrows):
+      xlsData.append(sheet.row_values(rowx=row))
+    
+    #
+    # Call Merge function for current typical and get final dataset
+    #
+    doneList = list[2](list[0], xlsData)
+    
+    #
+    # Create Sheet on instanciated workbook object with Typical Name
+    #
+    printListItem('Creating '+list[1]+' Sheet and importing Data ...', 'cyan')
+    ws = wb.create_sheet(list[1])
 
-#
-# Instanciate Output File Object
-#
-wb = Workbook()
-#
-# File Input Circle for ProcessLib File
-#
-while True:
+    #
+    # Populate this sheet
+    #
+    for row in doneList:
+      ws.append(row)
+
   #
-  # Get Path of ProcessLib File
+  # Save new file in 'output' folder
   #
-  filePath = getProcessPath('ProcessLibraryOnlineConfigTool')
-  if(filePath == False): continue
-  #
-  # Get Excel Data from ProcessLib File
-  #
-  book = getProcessFileData(filePath, 'ProcessLibraryOnlineConfigTool')
-  if(book == None):
-    confirmation = getUserConfirmation('Want to search for the ProcessLibraryOnlineConfigTool File again ?')
+  try:
+    defaultSheet = wb['Sheet']
+    wb.remove(defaultSheet)
+  except: pass
+
+  try:
+    wb.save('./script/output/'+pid+'-processed.xlsx')
+    print('')
+    printInfoBlock('File for PID: '+pid+' saved in \'output\' folder.', 'green')
+    print('')
+    confirmation = getUserConfirmation('Want to start again ?')
+    clearConsole()
     if(confirmation == True): continue
-    else: exit()
-  else: break
-
-#
-# Loop through all saved typicals with their items
-# list = [listItems, typicalName]
-#
-for list in finalLists:
-  
-  #---------------- get xls sheet by typical name
-  sheet = book.sheet_by_name(list[1])
-  rowCount = sheet.nrows
-  #----------------- get XLS data
-  xlsData = []
-  for row in range(sheet.nrows):
-    xlsData.append(sheet.row_values(rowx=row))
-  
-  #
-  # Call Merge function for current typical and get final dataset
-  #
-  doneList = list[2](list[0], xlsData)
-  
-  #
-  # Create Sheet on instanciated workbook object with Typical Name
-  #
-  printListItem('Creating '+list[1]+' Sheet and importing Data ...', 'cyan')
-  ws = wb.create_sheet(list[1])
-
-  #
-  # Populate this sheet
-  #
-  for row in doneList:
-    ws.append(row)
-
-#
-# Save new file in 'output' folder
-#
-try:
-  defaultSheet = wb['Sheet']
-  wb.remove(defaultSheet)
-except: pass
-
-try:
-  wb.save('./script/output/'+pid+'-processed.xlsx')
-  print('')
-  printInfoBlock('File for PID: '+pid+' saved in \'output\' folder.', 'green')
-  print('')
-except:
-  clearConsole()
-  print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
-  exit()
+    else: break
+  except:
+    clearConsole()
+    print('Something went wrong while saving the file. Make sure the file you are writing to \033[93mis closed\033[0m.\n')
+    exit()

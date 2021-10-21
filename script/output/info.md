@@ -1,1 +1,0 @@
-output folder for filtered master data

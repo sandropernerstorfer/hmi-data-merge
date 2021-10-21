@@ -8,7 +8,8 @@ from assets.database import sheetName
 
 # Get current script path
 scriptLocation = os.path.abspath(os.path.dirname(__file__))
-directoryName = scriptLocation.split('\\')[-1]
+directoryName = str(os.path.split(scriptLocation)[-1])
+
 # Initial Console Clearing
 clearConsole()
 
@@ -114,7 +115,8 @@ while True:
   except: pass
 
   try:
-    wb.save(scriptLocation+'\\'+pid+'-processed.xlsx')
+    savePath = os.path.join(scriptLocation, pid+'-processed.xlsx')
+    wb.save(savePath)
     print('')
     printInfoBlock('File for PID: '+pid+' saved in \''+directoryName+'\' folder.', 'green')
     print('')

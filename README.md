@@ -2,7 +2,7 @@
 ***
 This Script will take the <span style='color: #65c1c2; font-weight: 600'>Master Instrument File</span>, and filter the data based on the user input: <span style='color: #65c1c2; font-weight: 600'>P&ID</span> and <span style='color: #65c1c2; font-weight: 600'>Typicals</span>.
 For each given Typical the data will be processed and saved controlled by the corresponding Typical Filter Logic.
-Output will then be stored in the script directory as new Excel File with one new Sheet for each filtered typical.
+Output will then be stored on the desktop as new Excel File with one new Sheet for each filtered typical.
 
 This data can then replace the rows in the ProcessLibraryConfigTool.xls File, sheet by sheet.
 <ul>
@@ -15,6 +15,31 @@ This data can then replace the rows in the ProcessLibraryConfigTool.xls File, sh
 <span style='color: #492; font-weight: 600'>Filter Logic finished for following Typicals:</span>
 
 * *P_AInHART*
+
+<span style='color: #492; font-weight: 600'>Added Locations for Safety Area (default is 'area01'):</span>
+
+* *+H00*
+* *+H01*
+* *+H04*
+* *+H05*
+* *+H06*
+* *+H07*
+* *+H08*
+* *+H09*
+* *+H10*
+* *+H11*
+* *+H12*
+* *+H14*
+* *+H16*
+* *+H17*
+* *+H19*
+* *+H20*
+* *+H21*
+* *+H22*
+* *+H23*
+* *+H24*
+* *+H25*
+* *+H26*
 
 
 ***
@@ -33,6 +58,11 @@ This data can then replace the rows in the ProcessLibraryConfigTool.xls File, sh
 ***
 #### File & Directory Info
 
+##### application.zip:
+- <span style='color: #79c2c2; font-weight: 600;'>index.exe</span>
+  - Executable Application to run the script
+
+##### src:
 - <span style='color: #79c2c2; font-weight: 600;'>index.py</span>
   - Main Program Cycle
 <br>
@@ -61,7 +91,7 @@ This data can then replace the rows in the ProcessLibraryConfigTool.xls File, sh
 * Get <span style='color: #79c2c2; font-weight: 600;'>'ProcessLibraryOnlineConfigTool.xls' File</span> (with desired typicals sheet-data) from Remote Machine
 <br>
 
-* Start script <span style='color: #79c2c2; font-weight: 600;'>index.py</span>
+* Start script <span style='color: #79c2c2; font-weight: 600;'>index.py</span> or the index.exe in the v*.* folder
   * Select Master-Excel in dialog and load entire Instrument Data
   * Enter target P&ID
   * Enter target Typicals. Possible to enter multiple, by seperating them with a semicolon - typical;typical;typical
@@ -72,7 +102,7 @@ This data can then replace the rows in the ProcessLibraryConfigTool.xls File, sh
   * This final updated list contains exactly the same row counts as ProcessLib. had before
 
   * For each entered typical, a sheet named after the typical, is stored into an excel-File. for example (2403-processed.xlsx)
-  * This File can be found in the current script directory
+  * This File can be found on the desktop
 
 <br>
 

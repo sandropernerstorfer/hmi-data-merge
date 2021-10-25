@@ -4,7 +4,28 @@ from assets.filtering.P_AInHART import P_AInHART_Filter, P_AInHART_Merge
 # --------------------------------------------------------------------------------------------------------- Available Safety Areas
 #
 safetyAreas = {
-  '+H06': 'Distn'
+  '+H00': 'OSBL',
+  '+H01': 'GC',
+  '+H04': 'CIP',
+  '+H05': 'PSA',
+  '+H06': 'Distn',
+  '+H07': 'CW',
+  '+H08': 'Cogen',
+  '+H09': 'WWT',
+  '+H10': 'EtOH',
+  '+H11': 'Civil',
+  '+H12': 'OSBL',
+  '+H14': 'Civil',
+  '+H16': 'Civil',
+  '+H17': 'FF',
+  '+H19': 'ISBL',
+  '+H20': 'ISBL',
+  '+H21': 'ISBL',
+  '+H22': 'WT',
+  '+H23': 'GC',
+  '+H24': 'WT',
+  '+H25': 'WT',
+  '+H26': 'AnalyC'
 }
 
 #

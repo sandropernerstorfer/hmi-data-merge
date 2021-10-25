@@ -64,6 +64,7 @@ def getUserConfirmation(text):
 def getExcelPath(fileName):
   root = tkinter.Tk()
   root.withdraw()
+  root.wm_attributes('-topmost', 1)
   print('[ ] Select '+fileName+'-File in dialog')
   time.sleep(.8)
   filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
@@ -107,7 +108,7 @@ def askForPid():
 #
 # Ask for Typical Input
 # Search if Typicals exists and return all typical tools from database
-# @return -> list[] of lists[filterFunction, typicalName]
+# @return -> list[] of lists[filterFunction, typicalName, mergeFunction]
 #
 def askAndReturnFilterTools():
   printInfoBlock('Set Typicals you want to filter', 'cyan')
@@ -170,7 +171,8 @@ def getFilterTools(typical):
 def getProcessPath(fileName):
   root = tkinter.Tk()
   root.withdraw()
-  print('[ ] Select '+fileName+'-File in dialog')
+  root.wm_attributes('-topmost', 1)
+  print('[ ] Select '+fileName+' File in dialog')
   time.sleep(.8)
   filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
   root.destroy()
@@ -179,7 +181,7 @@ def getProcessPath(fileName):
     confirmation = getUserConfirmation('Want to search for ProcessLibraryOnlineConfigTool again ?')
     if(confirmation == False): exit()
     else: return False
-  print('[\033[92mx\033[0m] Select '+fileName+'-File in dialog')
+  print('[\033[92mx\033[0m] Select '+fileName+' File in dialog')
   time.sleep(2)
   return filePath
 

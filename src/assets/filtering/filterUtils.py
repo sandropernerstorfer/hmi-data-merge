@@ -1,3 +1,6 @@
+from assets.utils.console import printListItem
+
+
 def checkIfRowUsable(row, typeColumn, tagColumn):
   if row[typeColumn] == None or row[tagColumn] == None: return False
   if row[typeColumn] == '-' or row[tagColumn] == '-': return False
@@ -14,6 +17,17 @@ def convertControllerToInput(type):
     if len(type) == 2 and type[-1] == 'C':
       t = list(type)
       t[-1] = 'I'
+      type = ''.join(t)
+  return type
+
+def convertInputToController(type):
+  try:
+    type = str(type).strip()
+  except: return ''
+  finally:
+    if len(type) == 2 and type[-1] == 'I':
+      t = list(type)
+      t[-1] = 'C'
       type = ''.join(t)
   return type
 
@@ -49,7 +63,7 @@ def findSafetyArea(row, safetyAreas, locationColumn):
   location = row[locationColumn]
   if location in safetyAreas:
     return safetyAreas[location]
-  else: return safetyAreas['default']
+  else: return 'area01'
 
 def createMinMaxRange(row, rangeColumn):
   
@@ -134,5 +148,8 @@ def splitTagNameString(value, splitter:str, maxsplit = -1):
 def compressAndSortFinalData(dataSet, firstRow, sortKey):
   for i in range(firstRow):
     dataSet.pop(0)
-  dataSet = sorted(dataSet, key=lambda x: x[sortKey])
+  try:
+    dataSet = sorted(dataSet, key=lambda x: x[sortKey])
+  except:
+    dataSet.insert(0, 'sortError')
   return dataSet

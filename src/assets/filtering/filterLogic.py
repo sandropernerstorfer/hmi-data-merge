@@ -16,6 +16,224 @@ from assets.filtering.filterUtils import *
 
 # ----------------------------------------------------------------------------------------------------------------------- #
 
+def Faceplates_Filter(instrumentRows, filterTypes, safetyAreas, i):
+  
+  typeCol     = i['typeColumn']
+  tagCol      = i['tagColumn']
+  descCol     = i['descColumn']
+  locationCol = i['locationColumn']
+  routeCol    = i['routeColumn']
+  safetyCols  = [i['safetyColumn1'], i['safetyColumn2'], i['safetyColumn3']]
+  
+  entries = []
+  warnings = ['# Faceplates Warnings:']
+  for row in instrumentRows:
+
+    if(checkIfRowUsable(row, typeCol, tagCol)): pass
+    else: continue
+    
+    type = getType(row, typeCol)
+    if type not in filterTypes: continue
+
+    fullTag = createFullTag(type, row, tagCol)
+    label = createLabel(fullTag, row, safetyCols, routeCol)
+    desc = getDescription(row, descCol)
+    area = findSafetyArea(row, safetyAreas, locationCol)
+    
+    entries.append([fullTag, label, desc, area])
+  
+  return entries, warnings
+
+def Faceplates_Merge(masterData, processLibData, i):
+  mergedOutput = []
+  controlOutput = []
+  iteration = 0
+  for xrow in processLibData:
+    if iteration >= i['firstRow']:
+      if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
+    iteration += 1
+    for row in masterData:
+      if xrow[i['key']] == row[0]:
+        controlOutput.append(row)
+        xrow[i['tag']]        = row[0]
+        xrow[i['label']]      = row[1]
+        xrow[i['desc']]       = row[2]
+        xrow[i['area']]       = row[3]
+        break 
+    mergedOutput.append(xrow)
+  return compressAndSortFinalData(mergedOutput, i['firstRow'], i['instanceKey']), controlOutput
+
+
+def PT_AInGas_Filter(instrumentRows, filterTypes, safetyAreas, i):
+  
+  typeCol     = i['typeColumn']
+  tagCol      = i['tagColumn']
+  locationCol = i['locationColumn']
+  descCol     = i['descColumn']
+  rangeCol    = i['rangeColumn']
+  unitCol     = i['unitColumn']
+  routeCol    = i['routeColumn']
+  safetyCols  = [i['safetyColumn1'], i['safetyColumn2'], i['safetyColumn3']]
+  
+  entries = []
+  warnings = ['# PT_AInGas Warnings:']
+  for row in instrumentRows:
+    
+    if(checkIfRowUsable(row, typeCol, tagCol)): pass
+    else: continue
+    
+    type = getType(row, typeCol)
+    if type not in filterTypes: continue
+    
+    fullTag = createFullTag(type, row, tagCol)
+    
+    desc = getDescription(row, descCol)
+    
+    unit = getUnit(row, unitCol)
+    
+    label = createLabel(fullTag, row, safetyCols, routeCol)
+    
+    area = findSafetyArea(row, safetyAreas, locationCol)
+    
+    minRange, maxRange = createMinMaxRange(row, rangeCol)
+    if minRange is False or maxRange is False:
+      warnings.append(returnUnsureRange(row[rangeCol], fullTag))
+      minRange = None
+      maxRange = None
+    else:
+      minRange = rangeTypeCoercion(minRange)
+      maxRange = rangeTypeCoercion(maxRange)
+    
+    entries.append([fullTag, label, desc, area, minRange, maxRange, unit])
+
+  return entries, warnings
+
+def PT_AInGas_Merge(masterData, processLibData, i):
+  mergedOutput = []
+  controlOutput = []
+  iteration = 0
+  for xrow in processLibData:
+    if iteration >= i['firstRow']:
+      if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
+    iteration += 1
+    for row in masterData:
+      if xrow[i['key']] == row[0]:
+        controlOutput.append(row)
+        xrow[i['tag']]        = row[0]
+        xrow[i['label']]      = row[1]
+        xrow[i['desc']]       = row[2]
+        xrow[i['area']]       = row[3]
+        xrow[i['rangeMin']]   = row[4]
+        xrow[i['rangeMax']]   = row[5]
+        xrow[i['unit']]       = row[6]
+        break
+    mergedOutput.append(xrow)
+  return compressAndSortFinalData(mergedOutput, i['firstRow'], i['instanceKey']), controlOutput
+
+
+def PT_ElectricalRef_Filter(instrumentRows, filterTypes, safetyAreas, i):
+  
+  typeCol     = i['typeColumn']
+  tagCol      = i['tagColumn']
+  descCol     = i['descColumn']
+  locationCol = i['locationColumn']
+  routeCol    = i['routeColumn']
+  safetyCols  = [i['safetyColumn1'], i['safetyColumn2'], i['safetyColumn3']]
+  
+  entries = []
+  warnings = ['# PT_ElectricalRef Warnings:']
+  for row in instrumentRows:
+
+    if(checkIfRowUsable(row, typeCol, tagCol)): pass
+    else: continue
+    
+    type = getType(row, typeCol)
+    if type == 'MC': pass
+    else: type = convertControllerToInput(type)
+    if type not in filterTypes: continue
+
+    fullTag = createFullTag(type, row, tagCol)
+    label = createLabel(fullTag, row, safetyCols, routeCol)
+    desc = getDescription(row, descCol)
+    area = findSafetyArea(row, safetyAreas, locationCol)
+    
+    entries.append([fullTag, label, desc, area])
+  
+  return entries, warnings
+
+def PT_ElectricalRef_Merge(masterData, processLibData, i):
+  mergedOutput = []
+  controlOutput = []
+  iteration = 0
+  for xrow in processLibData:
+    if iteration >= i['firstRow']:
+      if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
+    iteration += 1
+    moreString  = splitTagNameString(xrow[i['key']], '_')
+    if moreString == None:
+      mergedOutput.append(xrow)
+      continue
+    for row in masterData:
+      joinedKey = row[0]+'_'+moreString
+      if xrow[i['key']] == joinedKey:
+        controlOutput.append(row)
+        xrow[i['tag']]        = row[0]
+        xrow[i['label']]      = row[1]
+        xrow[i['desc']]       = row[2]
+        xrow[i['area']]       = row[3]
+        break 
+    mergedOutput.append(xrow)
+  return compressAndSortFinalData(mergedOutput, i['firstRow'], i['instanceKey']), controlOutput
+
+
+def PT_AInGasPART_Filter(instrumentRows, filterTypes, safetyAreas, i):
+  
+  typeCol     = i['typeColumn']
+  tagCol      = i['tagColumn']
+  descCol     = i['descColumn']
+  locationCol = i['locationColumn']
+  routeCol    = i['routeColumn']
+  safetyCols  = [i['safetyColumn1'], i['safetyColumn2'], i['safetyColumn3']]
+  
+  entries = []
+  warnings = ['# PT_AInGasPART Warnings:']
+  for row in instrumentRows:
+
+    if(checkIfRowUsable(row, typeCol, tagCol)): pass
+    else: continue
+    
+    type = getType(row, typeCol)
+    if type not in filterTypes: continue
+
+    fullTag = createFullTag(type, row, tagCol)
+    label = createLabel(fullTag, row, safetyCols, routeCol)
+    desc = getDescription(row, descCol)
+    area = findSafetyArea(row, safetyAreas, locationCol)
+    
+    entries.append([fullTag, label, desc, area])
+  
+  return entries, warnings
+
+def PT_AInGasPART_Merge(masterData, processLibData, i):
+  mergedOutput = []
+  controlOutput = []
+  iteration = 0
+  for xrow in processLibData:
+    if iteration >= i['firstRow']:
+      if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
+    iteration += 1
+    for row in masterData:
+      if xrow[i['key']] == row[0]:
+        controlOutput.append(row)
+        xrow[i['tag']]        = row[0]
+        xrow[i['label']]      = row[1]
+        xrow[i['desc']]       = row[2]
+        xrow[i['area']]       = row[3]
+        break 
+    mergedOutput.append(xrow)
+  return compressAndSortFinalData(mergedOutput, i['firstRow'], i['instanceKey']), controlOutput
+
+
 def PT_Intlk_Filter(instrumentRows, filterTypes, safetyAreas, i):
   
   typeCol     = i['typeColumn']
@@ -659,6 +877,7 @@ def P_Motor_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -707,6 +926,7 @@ def P_PF52x_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -755,6 +975,7 @@ def P_PF755_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -786,6 +1007,7 @@ def P_PIDE_Filter(instrumentRows, filterTypes, safetyAreas, i):
     else: continue
     
     type = getType(row, typeCol)
+    type = convertInputToController(type)
     if type not in filterTypes: continue
     
     fullTag = createFullTag(type, row, tagCol)
@@ -824,6 +1046,7 @@ def P_PIDE_Merge(masterData, processLibData, i):
     iteration += 1
     xrow[i['HasPVNav']] = int(i['HasPVNavStatic'])
     xrow[i['HasCVNav']] = int(i['HasCVNavStatic'])
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -978,6 +1201,7 @@ def P_ValveC_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -1027,6 +1251,7 @@ def P_ValveSO_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -1128,6 +1353,7 @@ def P_VSD_Merge(masterData, processLibData, i):
     if iteration >= i['firstRow']:
       if xrow[i['key']] is None or str(xrow[i['key']]).strip() == '': continue
     iteration += 1
+    xrow[i['PCmdLock']] = int(i['PCmdLockStatic'])
     for row in masterData:
       if xrow[i['key']] == row[0]:
         controlOutput.append(row)
@@ -1141,6 +1367,10 @@ def P_VSD_Merge(masterData, processLibData, i):
 
 
 typicals = {
+  'Faceplates': [Faceplates_Filter, Faceplates_Merge],
+  'PT_AInGas': [PT_AInGas_Filter, PT_AInGas_Merge],
+  'PT_ElectricalRef': [PT_ElectricalRef_Filter, PT_ElectricalRef_Merge],
+  'PT_AInGasPART': [PT_AInGasPART_Filter, PT_AInGasPART_Merge],
   'PT_Intlk': [PT_Intlk_Filter, PT_Intlk_Merge],
   'PT_CfgModeChg': [PT_CfgModeChg_Filter, PT_CfgModeChg_Merge],
   'PT_CondSel': [PT_CondSel_Filter, PT_CondSel_Merge],

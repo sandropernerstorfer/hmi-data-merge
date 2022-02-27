@@ -9,6 +9,10 @@ The rows in the Full-Sheets can then replace the rows in the ProcessLibraryConfi
 
 <span style='color: #492; font-weight: 600'>Filter Logic finished for following Typicals:</span>
 
+* *Faceplates*
+* *PT_AInGas*
+* *PT_ElectricalRef*
+* *PT_AInGasPART*
 * *PT_Intlk*
 * *PT_CfgModeChg*
 * *PT_CondSel*

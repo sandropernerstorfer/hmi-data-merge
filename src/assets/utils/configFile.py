@@ -38,7 +38,6 @@ def checkConfigData(configData):
     if key in typicals:
       if len(configData['typicalParameters'][key]) == 0:
         warnings.append('"'+key+'" key in "Typicals Filter Parameters" holds no filtering values.')
-  if len(warnings) > 1: return warnings
   
   # Add default Safety Area value
   configData['areaParameters']['default'] = 'area01'
@@ -50,5 +49,6 @@ def checkConfigData(configData):
         configData['processLibParameters'][typical][key] -= 1
       except: pass
   
-  # Return empty array if no errors or warnings occured
+  # Return warnings or empty list if no errors or warnings occured
+  if len(warnings) > 1: return warnings
   return []

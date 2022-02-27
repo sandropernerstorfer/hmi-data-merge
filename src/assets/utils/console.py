@@ -55,7 +55,13 @@ def getUserConfirmation(text):
     return True
 
 def printAllFilterWarnings(allWarnings: list):
+  warningsPrinted = 0
   for warnings in allWarnings:
+    if len(warnings) == 1: continue
     print('')
+    warningsPrinted += 1
     for msg in warnings:
       printListItem(msg, 'yellow')
+  
+  if warningsPrinted > 0: return True
+  return False

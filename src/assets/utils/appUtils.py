@@ -1,12 +1,8 @@
 from os import path
+import re
 from assets.utils.console import *
 from assets.filtering.filterLogic import typicals
 
-
-def getDesktopPathAndDirname():
-  desktopPath = path.expanduser("~/Desktop")
-  directoryName = str(path.split(desktopPath)[-1])
-  return desktopPath, directoryName
 
 def askForPid():
   printInfoBlock('Set P&ID you want to filter', 'cyan')
@@ -125,7 +121,7 @@ def getFilterTools(typical):
 def returnMergeDifferences(mergedList, controlList, mergedKey, controlKey):
   mergedTags = []
   for list in mergedList:
-    mergedTags.append(list[mergedKey].split('_', 1)[0])
+    mergedTags.append(str(list[mergedKey]).split('_', 1))
     
   controlTags = []
   for list in controlList:
@@ -134,19 +130,49 @@ def returnMergeDifferences(mergedList, controlList, mergedKey, controlKey):
   if len(mergedTags) == len(controlTags): return []
   
   tagDiffs = []
-  for item in mergedTags:
-    if item not in controlTags:
-      tagDiffs.append(item)
+  for tag in mergedTags:
+    if tag[0] not in controlTags:
+      if len(tag) == 2:
+        if 'old' in tag[1] or 'Old' in tag[1] or 'not_used' in tag[1] or 'Delete' in tag[1]:    # conditionally appends tag addition
+          tagDiffs.append('_'.join(tag))
+        else: tagDiffs.append(tag[0])
+      else: tagDiffs.append(tag[0])
   
   messages = []
   for tag in tagDiffs:
-    spaceForTag = 9
-    tagAsText = str(tag)
-    textLength = len(tagAsText)
-    spaceForTag -= textLength
-    if spaceForTag < 0: spaceForTag = 0
-    tagText = tag+spaceForTag*' '
-    
-    messages.append(tagText+' | Row not updated: exists in ProcessLib File but not in Instrument Index')
-    
+    messages.append('--'+str(tag))
+  
+  if len(messages) > 0:
+    messages.insert(0, 'The following signals were found in the ProcessLib Sheet but not in the Instrument Index. Therefore not updated:')  
   return messages
+
+def removeNotUsedRangeWarnings(warnings, mergedOutput, typicalName, mergedKey):
+  targetIndex = 0
+  targetList = []
+  for warningList in warnings:
+    if re.search(r'\b'+typicalName+r'\b', warningList[0]):
+      targetList = warningList
+      break
+    targetIndex = targetIndex + 1
+  
+  if len(targetList) == 0: return warnings
+  
+  warningHeader = targetList.pop(0)
+  
+  newWarningList = []
+  for warning in targetList:
+    w_signal = warning.split('|', 1)[0].strip()
+    
+    matchFound = False
+    for row in mergedOutput:
+      if w_signal in row[mergedKey]:
+        matchFound = True
+        break
+    
+    if matchFound:
+      newWarningList.append(warning)
+    
+  newWarningList.insert(0, warningHeader)
+  warnings[targetIndex] = newWarningList
+  
+  return warnings

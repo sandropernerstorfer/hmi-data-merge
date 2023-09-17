@@ -1,15 +1,42 @@
+Write-Host 
+"Deploying a new executable requires the following installations:
+* pip
+* openpyxl
+* xlrd
+* pyinstaller
+"
+
+$pkgConfirm = Read-Host -Prompt "Try to install missing packages using 'pip'? (y/n)"
+if($pkgConfirm.toLower() -ne 'y' -and $pkgConfirm -ne ""){
+	return
+}
+
+try{
+	Invoke-Expression "pip install pyinstaller"
+	Invoke-Expression "pip install openpyxl"
+	Invoke-Expression "pip install xlrd"
+}
+catch{
+	Write-Host
+	"Error: Unable to install packages
+	Make sure 'pip' is installed"
+	return
+}
+
+
 # save needed directory paths
 $mainDir  = Split-Path $MyInvocation.MyCommand.Path -Parent
 $srcDir   = "$mainDir/src"
 $icon 	  = "$mainDir/icon.ico"
-$tempDir  = "$mainDir/temp-src"
-$distDir  = "$mainDir/temp-src/dist"
+$tempDir  = "$mainDir/src-temp"
+$distDir  = "$mainDir/src-temp/dist"
 $exeCMD   = "pyinstaller --onefile --icon=icon.ico main.py"
 $appName  = "HMIDataMerge"
 
 # git check
 if(Test-Path -Path "$mainDir/.git"){
-	Read-Host -Prompt 'Caution: Make sure everything is pushed before proceeding'
+	Write-Host ""
+	Read-Host -Prompt 'git warning: make sure everything is pushed before proceeding'
 }
 
 # create temp dir + files
@@ -22,9 +49,9 @@ try {
 	Invoke-Expression $exeCMD
 }
 catch {
-	Write-Host "Error: build failed"
-	Write-Host "Make sure you have 'pyinstaller' installed"
-	Start-Sleep -s 4
+	Write-Host
+	"Error: build failed"
+	Start-Sleep -s 3
 	Exit
 }
 
@@ -44,9 +71,11 @@ Get-ChildItem -Path $tempDir -Recurse | Remove-Item -force -recurse
 Remove-Item $tempDir -Force
 
 # github actions
-$date   = Get-Date -Format "dd/MM/yyyy HH:mm"
-Invoke-Expression "git status"
-Read-Host -Prompt "continue?"
-Invoke-Expression "git add ."
-Invoke-Expression "git commit -m 'updated zip/exe -> $date'"
-Invoke-Expression "git push origin main"
+if(Test-Path -Path "$mainDir/.git"){
+	$date   = Get-Date -Format "dd/MM/yyyy HH:mm"
+	Invoke-Expression "git status"
+	Read-Host -Prompt "continue?"
+	Invoke-Expression "git add ."
+	Invoke-Expression "git commit -m 'updated zip/exe -> $date'"
+	Invoke-Expression "git push origin main"
+}

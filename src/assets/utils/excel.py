@@ -9,14 +9,14 @@ def getExcelPath(fileName):
   root = tkinter.Tk()
   root.withdraw()
   root.wm_attributes('-topmost', 1)
-  print('[ ] Select '+fileName+' File in dialog')
+  print('[ ] Select '+fileName+' file in dialog')
   time.sleep(.8)
   filePath = askopenfilename(filetypes = [( 'Excel File', '.xlsx .xls')])
   root.destroy()
   clearConsole()
   if(filePath == ''):
     sys.exit()
-  print('[\033[92mx\033[0m] Select '+fileName+' File in dialog')
+  print('[\033[92mx\033[0m] Select '+fileName+' file in dialog')
   time.sleep(2)
   return filePath
 

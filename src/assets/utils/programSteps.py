@@ -13,10 +13,10 @@ def initialActions():
   return dp
 
 def getConfigSheet():
-  path = getExcelPath('PyToolConfig')
-  ws = getExcelSheet(path, 'PyToolConfig', 'PyToolConfig', True)
+  path = getExcelPath('config')
+  ws = getExcelSheet(path, 'Config', 'Config', True)
   if ws == None:
-    confirmation = getUserConfirmation('Load Config File again ?')
+    confirmation = getUserConfirmation('Load config file again ?')
     clearConsole()
     if confirmation == True: return getConfigSheet()
     else: sys.exit()
@@ -29,8 +29,8 @@ def getConfigData(sheet):
   data = parseConfigJSON(json)
   if data == None:
     printListItem('Config Data could not be parsed.','red')
-    printListItem('Make sure the correct Formatting Rules are applied inside the Config Excel (JSON Formatting).','yellow')
-    confirmation = getUserConfirmation('Load Config File again ?')
+    printListItem('Make sure the correct formatting rules are applied inside the config file (JSON formatting).','yellow')
+    confirmation = getUserConfirmation('Load config file again ?')
     clearConsole()
     if confirmation == True: return 'load again'
     else: sys.exit()
@@ -53,7 +53,7 @@ def handleConfigWarnings(warnings):
   if confirmation == False:
     printListItem('You can adjust the config file to remove the warnings before you load again.', 'cyan')
     print('')
-    confirmation = getUserConfirmation('Load Config File again ?')
+    confirmation = getUserConfirmation('Load config file again ?')
     clearConsole()
     if confirmation == True: return 'load again'
     else: sys.exit()
@@ -64,7 +64,7 @@ def handleConfigErrors(errors):
   for error in errors:
     printListItem(error, 'red')
   print('')
-  confirmation = getUserConfirmation('Load Config File again ?')
+  confirmation = getUserConfirmation('Load config file again ?')
   clearConsole()
   if confirmation == True: return 'load again'
   else: sys.exit()
@@ -73,7 +73,7 @@ def getInstrumentIndexSheet():
   path = getExcelPath('Instrument Index')
   ws = getExcelSheet(path, 'Instrument Index', 'Index')
   if ws == None:
-    confirmation = getUserConfirmation('Load Instrument Index again ?')
+    confirmation = getUserConfirmation('Load instrument index again ?')
     clearConsole()
     if confirmation == True: return getInstrumentIndexSheet()
     else: sys.exit()
@@ -85,7 +85,7 @@ def getPidAndIndexElements(sheet, indexParameters):
   clearConsole()
   if len(allElements) == 0:
     printPidFilterResult(allElements, pid, 'red')
-    printListItem('No Elements with given P&ID found. Try searching again.', 'red')
+    printListItem('No elements with given P&ID found. Try searching again.', 'red')
     print('')
     return 'load again', None
   else: return pid, allElements

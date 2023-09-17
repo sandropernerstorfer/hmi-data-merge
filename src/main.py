@@ -1,12 +1,11 @@
 from openpyxl import Workbook
 from assets.utils.programSteps import *
 
-
-# ------------------------------------------------------------------------------------------ Runtime Start
 def main():
-# ------------------------------------------------------------------------------------------ Initial Actions and Inits
+
   desktop_path = initialActions()
-# ------------------------------------------------------------------------------------------ Config Data Cycle
+  
+# config data cycle
   while True:
     config_ws = getConfigSheet()
     config_data = getConfigData(config_ws)
@@ -24,11 +23,13 @@ def main():
     indexParameters      = config_data['indexParameters']
     processLibParameters = config_data['processLibParameters']
     break
-# ------------------------------------------------------------------------------------------ Get Instrument Index Sheet
-  index_ws = getInstrumentIndexSheet() 
-# ------------------------------------------------------------------------------------------ Logic Cycle Start
+
+  index_ws = getInstrumentIndexSheet()
+  
+# logic cycle
   while True:
-# ------------------------------------------------------------------------------------------ Get P&ID & Typical Functions and eventually all Filtered Typical Lists with Warnings
+    # get P&ID & typical functions
+    # eventually all filtered typical lists with warnings
     while True:
       pid, allElements = getPidAndIndexElements(index_ws, indexParameters)
       if pid == 'load again': continue
@@ -36,16 +37,14 @@ def main():
       finalLists, allFilterWarnings = getFinalLists(allElements, typicalParameters, areaParameters, indexParameters)
       if finalLists == 'try again': continue
       else: break
-# ------------------------------------------------------------------------------------------ Get User Confirmation for Continuation
+
     getMergeContinuationConfirmation()
-# ------------------------------------------------------------------------------------------ Get ProcessLibOnlyConfigTool Workbook
     processLib_wb = getProcessLibWorkbook()
-# ------------------------------------------------------------------------------------------ Instanciate Output File Workbook
-    output_wb = Workbook()  
-# ------------------------------------------------------------------------------------------ Loop through entire final list of typical lists & merge with processLib Sheets into output book
+    output_wb = Workbook()
+    
+    # loop through entire final list of typical lists
+    # merge with processLib sheets into output book
     for list in finalLists:
-      
-      # unpack for ease of use
       signal_list, merge_function, typical_name = list
       
       sheet, rowCount = getProcessLibTypicalSheet(processLib_wb, typical_name)
@@ -54,12 +53,13 @@ def main():
       allFilterWarnings = removeNotUsedRangeWarnings(allFilterWarnings, mergedOutput, typical_name, processLibParameters[typical_name]['key'])
       
       if pid == 'all':
-        differenceWarnings = returnMergeDifferences(mergedOutput, controlOutput, processLibParameters[typical_name]['key'], 0)     # 0 is index of Full Tag in control sheet - filters normally return full tag at index 0
+        # 0 is index of Full Tag in control sheet - filters normally return full tag at index 0
+        differenceWarnings = returnMergeDifferences(mergedOutput, controlOutput, processLibParameters[typical_name]['key'], 0)
         allFilterWarnings = mergeCollectedWarnings(allFilterWarnings, differenceWarnings, typical_name)
       
       printListItem('Creating '+typical_name+' Sheet and importing Data ...', 'cyan')
       
-      # Create and populate control sheet
+      # create and populate control sheet
       controlSheet = output_wb.create_sheet(typical_name+'-Imported')
       controlSheet.append([' '])
       controlSheet.append(['This is just the control sheet, if you want to check the master imports for '+typical_name+' again.'])
@@ -70,21 +70,21 @@ def main():
       for row in controlOutput:
         controlSheet.append(row)
       
-      # Create and populate output sheet 
+      # create and populate output sheet 
       outputSheet = output_wb.create_sheet(typical_name+'-Full')
       for row in mergedOutput:
         outputSheet.append(row)
-# ------------------------------------------------------------------------------------------ Finish + save output file and display all warnings
+    
+    # save output file and display all warnings
     output_wb = removeDefaultSheet(output_wb)
     saveOutputFile(output_wb, desktop_path, pid)
     handleFilterWarnings(allFilterWarnings)
-# ------------------------------------------------------------------------------------------ Program end - user can restart
+    
+    # program end - user can restart
     confirmation = getUserConfirmation('Want to start again ?')
     clearConsole()
     if confirmation == True: continue
     else: break
-
-
 
 # SP - NS Init   
 if __name__ == '__main__':

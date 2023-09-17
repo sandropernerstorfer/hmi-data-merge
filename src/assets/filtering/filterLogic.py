@@ -1,8 +1,4 @@
-from assets.filtering.filterUtils import *
-
-
 # ----------------------------------------------------------------------------------------------------------------------- #
-
 ''' Filter Functions ''' 
 # Takes the Pre-Filtered Instrument Index Data ( all instruments or specific P&ID )
 # Filters and Processes this Data depending on Typical Characteristics & Config File Typical Parameters
@@ -13,8 +9,10 @@ from assets.filtering.filterUtils import *
 # Compare the final processed output rows from the Filter Function against the corresponding ProcessLib Sheet
 # Loops through the fitting ProcessLib Sheet and merges & updates everything it can with the final data
 # row[index] is corresponding to the return order of the filter function of that typical
-
 # ----------------------------------------------------------------------------------------------------------------------- #
+
+from assets.filtering.filterUtils import *
+
 
 def Faceplates_Filter(instrumentRows, filterTypes, safetyAreas, i):
   

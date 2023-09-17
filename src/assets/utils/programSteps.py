@@ -91,9 +91,9 @@ def getPidAndIndexElements(sheet, indexParameters):
   else: return pid, allElements
 
 def getFinalLists(allElements, typicalParams, areaParams, indexParams):
-  filterToolsList = askAndReturnFilterTools() # -------- list[[Filter,Merge,TypicalName],...]
-  finalLists = [] # ------------------------------------ this stores all final filtered lists + typical name
-  allFilterWarnings = [] # ----------------------------- this stores all warnings that occured in the filter (e.g. unsure range)
+  filterToolsList = askAndReturnFilterTools() # list[[Filter,Merge,TypicalName],...]
+  finalLists = [] # this stores all final filtered lists + typical name
+  allFilterWarnings = [] # this stores all warnings that occured in the filter (e.g. unsure range)
   for filterTools in filterToolsList:
     filterResults, warnings = filterTools[0](allElements, typicalParams[filterTools[2]], areaParams, indexParams) # returns entries, warnings
     printTypicalFilterResults(filterResults, filterTools[2])
@@ -101,7 +101,7 @@ def getFinalLists(allElements, typicalParams, areaParams, indexParams):
       finalLists.append([filterResults, filterTools[1], filterTools[2]])
       if len(warnings) > 1:
         allFilterWarnings.append(warnings)
-  if len(finalLists) == 0: # --------------------------- Check if there is at least 1 entry to continue with
+  if len(finalLists) == 0: # check if there is at least 1 entry to continue with
         print('')
         printInfoBlock('Found no matching entries', 'red')
         print('')

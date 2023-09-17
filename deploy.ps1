@@ -3,11 +3,10 @@ Read-Host -Prompt 'Make sure everything is pushed'
 $mainDir  = Split-Path $MyInvocation.MyCommand.Path -Parent
 $srcDir   = "$mainDir/src"
 $icon 	  = "$mainDir/icon.ico"
-$deskDir  = "C:\Users\Synelecs\Desktop"
-$tempDir  = "$deskDir\temp-py-src"
+$tempDir  = "$mainDir\temp-py-src"
 $distDir  = "$tempDir\dist"
 $exeCMD   = "pyinstaller --onefile --icon=icon.ico main.py"
-$appName  = "HMI-DataMerge"
+$appName  = "HMIDataMerge"
 
 # create temp dir + files
 Copy-Item -Path $srcDir -Destination $tempDir -Recurse
@@ -24,15 +23,16 @@ catch {
 	Exit
 }
 
-# move old .zip to trash
-Remove-ItemSafely "$mainDir/*.zip"
-
-# move old .exe from desktop to trash
-Remove-ItemSafely "$deskDir/$appName.exe"
+# move old .zip and .exe to trash
+try{
+	Remove-ItemSafely "$mainDir/*.zip"
+	Remove-ItemSafely "$mainDir/*.exe"
+}
+catch {}
 
 # name new exe - compress to zip - and move into main dir
 Rename-Item -Path "$distDir\*.exe" -NewName "$appName.exe"
-Copy-Item -Path "$distDir\*.exe" -Destination $deskDir
+Copy-Item -Path "$distDir\*.exe" -Destination $mainDir
 Compress-Archive -Path "$distDir\*.exe" -Destination "$mainDir\$appName.zip"
 
 # remove temp dir

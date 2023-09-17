@@ -1,35 +1,31 @@
 ## HMI Data Merge
 
-More in depth technical guide and infos can be found in the config.xlsx "info" sheet.
+> More in depth technical guides and infos can be found in the config.xlsx "info" sheet.
 
 ***
 
-This Script will take the <span style='color: #65c1c2; font-weight: 600'>Master Instrument Index File</span>, and filter the data based on the user input: <span style='color: #65c1c2; font-weight: 600'>P&ID</span> and <span style='color: #65c1c2; font-weight: 600'>Typicals</span>.
-For each given Typical the data will be processed and saved controlled by the corresponding Typical Filter Logic.
-Output will then be stored on the desktop as new Excel File with two Sheets for each filtered typical (Control- & Full Sheet).
-The rows in the Full-Sheets can then replace the rows in the ProcessLibraryConfigTool.xls File.
+This application was developed for a company working in the automation industry, and acted as a development tool.
+
+There are two fundamental parts in the automation industry:
+* PLC - Programmable Logic Controller
+* HMI - Human Machine Interface
+
+The PLC being the computing unit and the HMI being the graphical user interface for industry operators.
+
+Data is shared and controlled back and forth between these components.
 
 ***
 
-#### File & Directory Info
+Big part of the development process consisted of getting giant excel files with many categorized sheets from the customer, which acted as blueprint for us engineers.
 
-##### app.zip:
-- <span style='color: #79c2c2; font-weight: 600;'>index.exe</span>
-  - Executable Application File to run the script
+In addition to that, the customer provided an helpful older format excel file (lets call it sync file), containing a macro that could read the entire HMI data from the PLC and print it into this excel file.
 
-##### config:
-- <span style='color: #79c2c2; font-weight: 600;'>PyToolConfig.xlsx</span>
-  - Configuration Interface - holds important indexing and filtering parameters
-  - Edit with caution. Must be JSON Formatted
+Another macro then sent the data back into the PLC as update.
 
-##### src/:
-- <span style='color: #79c2c2; font-weight: 600;'>main.py</span>
-  - Main Program Cycle
-<br>
+Job of the HMI Data Merge tool was to lay the giant excel from the customer right over the other and update/overwrite the sync file accordingly.
 
-- <span style='color: #79c2c2; font-weight: 600;'>./assets/utils/..</span>
-  - Holds Program Cycle Logic and Functions which control the Main Cycle
-<br>
+Lots of different types of instruments, equipment, sensors, motors and more came with even more specialized types. Called "typicals".
 
-- <span style='color: #79c2c2; font-weight: 600;'>./assets/filtering/..</span>
-  - Holds Typical Filter-, Merge-, and Helper-Functions
+Taking all those differences into account, the tool safely updated huge amounts of data without removing or destroying a row or column.
+
+While analyzing the data, collecting warnings, errors and potential problems, giving the engineer the least amount of work, but the best possible control.

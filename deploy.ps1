@@ -7,7 +7,7 @@ $deskDir  = "C:\Users\Synelecs\Desktop"
 $tempDir  = "$deskDir\temp-py-src"
 $distDir  = "$tempDir\dist"
 $exeCMD   = "pyinstaller --onefile --icon=icon.ico main.py"
-$appName  = "PyTool"
+$appName  = "HMI-DataMerge"
 
 # create temp dir + files
 Copy-Item -Path $srcDir -Destination $tempDir -Recurse
@@ -19,7 +19,7 @@ try {
 	Invoke-Expression $exeCMD
 }
 catch {
-	Write-Host "Failed Build"
+	Write-Host "Error: build failed"
 	Start-Sleep -s 3
 	Exit
 }
@@ -41,12 +41,8 @@ Remove-ItemSafely $tempDir
 # github actions
 Set-Location $mainDir
 $date   = Get-Date -Format "dd/MM/yyyy HH:mm"
-$status = "git status"
-$add    = "git add ."
-$commit = "git commit -m 'updated zip/exe -> $date'"
-$push   = "git push origin master"
-Invoke-Expression $status
-Read-Host -Prompt "ok ?"
-Invoke-Expression $add
-Invoke-Expression $commit
-Invoke-Expression $push
+Invoke-Expression "git status"
+Read-Host -Prompt "continue?"
+Invoke-Expression "git add ."
+Invoke-Expression "git commit -m 'updated zip/exe -> $date'"
+Invoke-Expression "git push origin main"

@@ -59,12 +59,12 @@ Set-Location $mainDir
 
 # move old .zip and .exe to trash
 Remove-Item "$mainDir/*.zip"
-Remove-Item "$mainDir/*.exe"
 
 # name new exe - compress to zip - and move into main dir
 Rename-Item -Path "$distDir\main.exe" -NewName "$appName.exe"
 Copy-Item -Path "$distDir\$appName.exe" -Destination $mainDir
 Compress-Archive -Path "$distDir\$appName.exe" -Destination "$mainDir\$appName.zip"
+Remove-Item "$mainDir/*.exe"
 
 # remove temp dir
 Get-ChildItem -Path $tempDir -Recurse | Remove-Item -force -recurse

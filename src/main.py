@@ -97,4 +97,3 @@ if __name__ == '__main__':
     clearConsole()
     printListItem('Application crashed while facing the following issue:', 'red')
     print(issue)
-    print('')
